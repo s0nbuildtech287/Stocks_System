@@ -30,10 +30,12 @@ interface MarketTableViewProps {
   onSelectTickerForFullView?: (ticker: string) => void;
 }
 
-export default function MarketTableView({ initialExpandedTicker = "FPT", onSelectTickerForFullView }: MarketTableViewProps) {
+export default function MarketTableView({ initialExpandedTicker, onSelectTickerForFullView }: MarketTableViewProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
-  const [expandedTickers, setExpandedTickers] = useState<Set<string>>(new Set([initialExpandedTicker]));
+  const [expandedTickers, setExpandedTickers] = useState<Set<string>>(
+    new Set(initialExpandedTicker ? [initialExpandedTicker] : [])
+  );
   const [favorites, setFavorites] = useState<Set<string>>(new Set(["FPT", "HPG", "TCB", "MBB"]));
   const [sortField, setSortField] = useState<keyof StockProfile>("id");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");

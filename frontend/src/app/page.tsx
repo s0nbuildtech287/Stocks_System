@@ -31,7 +31,7 @@ import { VIETNAM_STOCKS } from "@/lib/stockData";
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<"overview" | "screener" | "papertrading" | "backtest" | "valuation">("overview");
-  const [selectedTicker, setSelectedTicker] = useState<string>("FPT");
+  const [selectedTicker, setSelectedTicker] = useState<string | undefined>(undefined);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const handleSelectTicker = (ticker: string) => {
