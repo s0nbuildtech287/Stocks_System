@@ -1,0 +1,40 @@
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Secrets & Environment
+.env
+*.env.local
+
+# Build artifacts
+.gradle/
+build/
+**/build/
+bin/
+out/
+target/
+
+# Node / Next.js
+node_modules/
+**/node_modules/
+.next/
+**/.next/
+frontend/.next/
+frontend/out/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+dist/
+*.egg-info/
+.pytest_cache/
+
+# Docker volumes
+pgdata/
