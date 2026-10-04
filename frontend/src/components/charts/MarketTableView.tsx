@@ -38,6 +38,35 @@ export default function MarketTableView({ initialExpandedTicker = "FPT", onSelec
   const [sortField, setSortField] = useState<keyof StockProfile>("id");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [selectedStockForModal, setSelectedStockForModal] = useState<StockProfile | null>(null);
+  const [liveQuotes, setLiveQuotes] = useState<Record<string, any>>({});
+  const [isLiveSyncing, setIsLiveSyncing] = useState<boolean>(false);
+  const [lastSyncDate, setLastSyncDate] = useState<string>("");
+
+  // Sync live quotes from vnstock API
+  const fetchLiveQuotes = async () => {
+    setIsLiveSyncing(true);
+    try {
+      const res = await fetch("/api/quotes/live");
+      if (res.ok) {
+        const json = await res.json();
+        if (json && json.data) {
+          setLiveQuotes(json.data);
+          const firstKey = Object.keys(json.data)[0];
+          if (firstKey && json.data[firstKey].date) {
+            setLastSyncDate(json.data[firstKey].date);
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("Failed to sync live quotes", err);
+    } finally {
+      setIsLiveSyncing(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchLiveQuotes();
+  }, []);
 
   React.useEffect(() => {
     if (initialExpandedTicker) {
@@ -101,9 +130,21 @@ export default function MarketTableView({ initialExpandedTicker = "FPT", onSelec
     { id: "RETAIL_CONSUMER", label: "Bán Lẻ & TD", count: 6 },
   ];
 
-  // Filtered & Sorted Stocks
+  // Filtered & Sorted Stocks with Live vnstock Merged Data
   const filteredStocks = useMemo(() => {
-    return VIETNAM_50_STOCKS.filter((stock) => {
+    return VIETNAM_50_STOCKS.map((stock) => {
+      const live = liveQuotes[stock.ticker];
+      if (live) {
+        return {
+          ...stock,
+          price: live.price ?? stock.price,
+          change: live.change ?? stock.change,
+          changePct: live.changePct ?? stock.changePct,
+          volume24h: live.volume24h ?? stock.volume24h,
+        };
+      }
+      return stock;
+    }).filter((stock) => {
       // 1. Search filter
       const q = searchQuery.toLowerCase().trim();
       const matchQuery =
@@ -156,7 +197,7 @@ export default function MarketTableView({ initialExpandedTicker = "FPT", onSelec
       }
       return sortOrder === "asc" ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
     });
-  }, [searchQuery, selectedCategory, favorites, sortField, sortOrder]);
+  }, [searchQuery, selectedCategory, favorites, sortField, sortOrder, liveQuotes]);
 
   // Mini Long-Term (52W Macro) Sparkline SVG Renderer
   const renderLongTermSparkline = (stock: StockProfile) => {
@@ -267,7 +308,7 @@ export default function MarketTableView({ initialExpandedTicker = "FPT", onSelec
       <div className="glass-panel p-5 rounded-2xl border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-black uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-white/10">
               50 Bluechips Universe
             </span>
             <span className="text-xs text-slate-400 font-medium">
@@ -284,9 +325,19 @@ export default function MarketTableView({ initialExpandedTicker = "FPT", onSelec
 
         {/* Right quick stats */}
         <div className="flex items-center gap-3">
+          <button
+            onClick={fetchLiveQuotes}
+            disabled={isLiveSyncing}
+            className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-white/10 text-xs text-slate-300 flex items-center gap-2 transition-all font-mono-num"
+            title="Đồng bộ dữ liệu thời gian thực từ vnstock"
+          >
+            <span className={`w-2 h-2 rounded-full ${isLiveSyncing ? "bg-cyan-400 animate-spin" : "bg-emerald-400 animate-pulse"}`} />
+            <span>{isLiveSyncing ? "Đang đồng bộ..." : lastSyncDate ? `EOD ${lastSyncDate}` : "vnstock Live"}</span>
+          </button>
+
           <div className="px-4 py-2 rounded-xl bg-slate-900/80 border border-white/5 text-right">
             <div className="text-[10px] text-slate-400">Số mã hiển thị</div>
-            <div className="text-sm font-black font-mono-num text-emerald-400">
+            <div className="text-sm font-black font-mono-num text-white">
               {filteredStocks.length} / 50
             </div>
           </div>
