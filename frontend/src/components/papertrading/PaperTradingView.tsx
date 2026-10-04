@@ -40,12 +40,6 @@ interface TradeOrder {
 
 const INITIAL_CASH = 100_000_000; // 100M VND
 
-const DEFAULT_POSITIONS: Position[] = [
-  { ticker: "FPT", shares: 300, availableShares: 300, avgCost: 58000 },
-  { ticker: "HPG", shares: 1000, availableShares: 1000, avgCost: 19500 },
-  { ticker: "MBB", shares: 1000, availableShares: 1000, avgCost: 22000 },
-];
-
 export default function PaperTradingView() {
   // Live quotes state
   const [liveQuotes, setLiveQuotes] = useState<Record<string, any>>({});
@@ -53,7 +47,7 @@ export default function PaperTradingView() {
 
   // Portfolio State (with localStorage persistence)
   const [cash, setCash] = useState<number>(INITIAL_CASH);
-  const [positions, setPositions] = useState<Position[]>(DEFAULT_POSITIONS);
+  const [positions, setPositions] = useState<Position[]>([]);
   const [orders, setOrders] = useState<TradeOrder[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -67,19 +61,18 @@ export default function PaperTradingView() {
   // Load from localStorage on mount
   useEffect(() => {
     try {
-      const savedCash = localStorage.getItem("ss_paper_cash");
-      const savedPositions = localStorage.getItem("ss_paper_positions");
-      const savedOrders = localStorage.getItem("ss_paper_orders");
+      const savedCash = localStorage.getItem("ss_paper_cash_v2");
+      const savedPositions = localStorage.getItem("ss_paper_positions_v2");
+      const savedOrders = localStorage.getItem("ss_paper_orders_v2");
 
       if (savedCash !== null) setCash(Number(savedCash));
-      else {
-        // Initial setup with default positions cost deducted
-        const defaultCost = DEFAULT_POSITIONS.reduce((acc, p) => acc + p.shares * p.avgCost, 0);
-        setCash(INITIAL_CASH - defaultCost);
-      }
+      else setCash(INITIAL_CASH);
 
       if (savedPositions !== null) setPositions(JSON.parse(savedPositions));
+      else setPositions([]);
+
       if (savedOrders !== null) setOrders(JSON.parse(savedOrders));
+      else setOrders([]);
     } catch (e) {
       console.error("Error loading paper trading data:", e);
     }
@@ -90,9 +83,9 @@ export default function PaperTradingView() {
   useEffect(() => {
     if (!isInitialized) return;
     try {
-      localStorage.setItem("ss_paper_cash", cash.toString());
-      localStorage.setItem("ss_paper_positions", JSON.stringify(positions));
-      localStorage.setItem("ss_paper_orders", JSON.stringify(orders));
+      localStorage.setItem("ss_paper_cash_v2", cash.toString());
+      localStorage.setItem("ss_paper_positions_v2", JSON.stringify(positions));
+      localStorage.setItem("ss_paper_orders_v2", JSON.stringify(orders));
     } catch (e) {
       console.error("Error saving paper trading data:", e);
     }
@@ -258,7 +251,10 @@ export default function PaperTradingView() {
       localStorage.removeItem("ss_paper_cash");
       localStorage.removeItem("ss_paper_positions");
       localStorage.removeItem("ss_paper_orders");
-      setOrderMessage({ type: "success", text: "Tài khoản Paper Trading đã được làm mới thành công!" });
+      localStorage.removeItem("ss_paper_cash_v2");
+      localStorage.removeItem("ss_paper_positions_v2");
+      localStorage.removeItem("ss_paper_orders_v2");
+      setOrderMessage({ type: "success", text: "Tài khoản Paper Trading đã được làm mới về 100,000,000 đ tiền mặt!" });
     }
   };
 
