@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Filter,
   Search,
@@ -19,6 +19,7 @@ import {
   Flame,
   ShieldCheck,
   Zap,
+  Radio,
 } from "lucide-react";
 import { VIETNAM_STOCKS, StockProfile } from "@/lib/stockData";
 
@@ -35,6 +36,37 @@ export default function ScreenerView({ onSelectTicker }: { onSelectTicker?: (tic
   const [minValue20d, setMinValue20d] = useState<number>(0);   // in Billion VND
   const [minDivYield, setMinDivYield] = useState<number>(0);   // in %
   const [minProfitGrowth, setMinProfitGrowth] = useState<number>(-50); // in %
+
+  // Live quotes state
+  const [liveQuotes, setLiveQuotes] = useState<Record<string, any>>({});
+  const [isLiveLoading, setIsLiveLoading] = useState(false);
+  const [lastSyncTime, setLastSyncTime] = useState<string>("");
+
+  useEffect(() => {
+    const fetchLiveQuotes = async () => {
+      setIsLiveLoading(true);
+      try {
+        const res = await fetch("/api/quotes/live");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.quotes) {
+            const map: Record<string, any> = {};
+            data.quotes.forEach((q: any) => {
+              map[q.ticker] = q;
+            });
+            setLiveQuotes(map);
+            setLastSyncTime(data.asOfDate || new Date().toLocaleTimeString("vi-VN"));
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch live quotes for screener:", e);
+      } finally {
+        setIsLiveLoading(false);
+      }
+    };
+
+    fetchLiveQuotes();
+  }, []);
 
   // Sorting
   const [sortKey, setSortKey] = useState<SortKey>("value20d");
@@ -116,9 +148,25 @@ export default function ScreenerView({ onSelectTicker }: { onSelectTicker?: (tic
     setMinProfitGrowth(-50);
   };
 
+  // Dynamic stocks with live vnstock quotes
+  const enrichedStocks = useMemo(() => {
+    return VIETNAM_STOCKS.map((stock) => {
+      const live = liveQuotes[stock.ticker];
+      if (live && live.price > 0) {
+        return {
+          ...stock,
+          price: live.price,
+          changePct: live.changePct !== undefined ? live.changePct : stock.changePct,
+          value20d: live.value ? Math.round(live.value / 1_000_000_000) : stock.value20d,
+        };
+      }
+      return stock;
+    });
+  }, [liveQuotes]);
+
   // Filter & Sort Logic
   const filteredStocks = useMemo(() => {
-    return VIETNAM_STOCKS.filter((stock) => {
+    return enrichedStocks.filter((stock) => {
       // Search
       if (
         searchQuery &&
@@ -157,6 +205,7 @@ export default function ScreenerView({ onSelectTicker }: { onSelectTicker?: (tic
         : (valB as number) - (valA as number);
     });
   }, [
+    enrichedStocks,
     searchQuery,
     selectedExchange,
     selectedIndustry,
@@ -205,14 +254,20 @@ export default function ScreenerView({ onSelectTicker }: { onSelectTicker?: (tic
 
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 relative z-10">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-2">
-              <Flame className="w-3.5 h-3.5 text-emerald-400" /> Hệ thống Lọc Cổ phiếu Chuyên sâu
+            <div className="flex items-center gap-2 mb-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <Flame className="w-3.5 h-3.5 text-emerald-400" /> Hệ thống Lọc Cổ phiếu Chuyên sâu
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-800/80 text-emerald-400 border border-emerald-500/30">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                vnstock Real-time Live Sync {lastSyncTime && `(${lastSyncTime})`}
+              </div>
             </div>
             <h2 className="text-2xl font-extrabold text-white tracking-tight">
               Screener Đa Chiều &amp; Xếp Hạng Định Lượng
             </h2>
             <p className="text-xs text-slate-400 mt-1">
-              Dữ liệu Point-in-time cuối ngày, chuẩn hóa 100% theo quy ước tài chính thị trường Việt Nam
+              Dữ liệu Point-in-time cuối ngày từ vnstock, chuẩn hóa 100% theo quy ước tài chính thị trường Việt Nam
             </p>
           </div>
 
