@@ -249,22 +249,22 @@ export default function BacktestView() {
   return (
     <div className="space-y-6">
       {/* Top Banner & Strategy Selector */}
-      <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-5 shadow-2xl relative overflow-hidden">
+      <div className="glass-panel p-6 rounded-2xl border border-[#2B313A] bg-[#12161C] space-y-5 shadow-2xl relative overflow-hidden">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                <LineChart className="w-3.5 h-3.5 text-cyan-400" /> Động cơ Kiểm thử Định lượng Point-in-Time
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#F0B90B]/15 text-[#F0B90B] border border-[#F0B90B]/30">
+                <LineChart className="w-3.5 h-3.5 text-[#F0B90B]" /> Động cơ Kiểm thử Định lượng Point-in-Time
               </div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-800 text-emerald-400 border border-emerald-500/30">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-[#181A20] text-[#0ECB81] border border-[#0ECB81]/30">
+                <span className="w-2 h-2 rounded-full bg-[#0ECB81] animate-pulse" />
                 Pure Quantitative Engine
               </div>
             </div>
             <h2 className="text-2xl font-black text-white tracking-tight">
               Strategy Backtest &amp; Đánh Giá Hiệu Quả Factor
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-[#848E9C] mt-1">
               Mô phỏng đường cong vốn lịch sử, tính toán CAGR, Sharpe Ratio, Max Drawdown và Alpha vs VN-Index
             </p>
           </div>
@@ -272,7 +272,7 @@ export default function BacktestView() {
           <button
             onClick={handleRunBacktest}
             disabled={isRunning}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white text-xs font-bold transition-all shadow-lg shadow-cyan-500/25 disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#F0B90B] to-[#E5A905] hover:from-[#FCD535] hover:to-[#F0B90B] text-black text-xs font-black transition-all shadow-lg shadow-yellow-500/20 disabled:opacity-50"
           >
             <Play className={`w-3.5 h-3.5 fill-current ${isRunning ? "animate-spin" : ""}`} />
             {isRunning ? "Đang chạy mô phỏng..." : "Thực thi Backtest"}
@@ -280,13 +280,13 @@ export default function BacktestView() {
         </div>
 
         {/* Strategy Parameters Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 pt-2 border-t border-slate-800">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 pt-2 border-t border-[#2B313A]">
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-300">Vũ trụ Cổ phiếu</label>
+            <label className="text-xs font-semibold text-[#848E9C]">Vũ trụ Cổ phiếu</label>
             <select
               value={universe}
               onChange={(e) => setUniverse(e.target.value as any)}
-              className="w-full bg-slate-900 border border-slate-700 text-slate-200 text-xs font-bold rounded-xl p-2.5 focus:outline-none focus:border-cyan-500 shadow-sm"
+              className="w-full bg-[#0B0E11] border border-[#2B313A] text-[#EAECEF] text-xs font-bold rounded-xl p-2.5 focus:outline-none focus:border-[#F0B90B] shadow-sm"
             >
               <option value="VN30">VN30 Index (Bluechips hàng đầu)</option>
               <option value="VN50">50 Cổ phiếu Hệ thống (Top Large &amp; Midcaps)</option>
@@ -295,11 +295,11 @@ export default function BacktestView() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-300">Chiến lược Xếp hạng (Factor)</label>
+            <label className="text-xs font-semibold text-[#848E9C]">Chiến lược Xếp hạng (Factor)</label>
             <select
               value={strategyType}
               onChange={(e) => setStrategyType(e.target.value as any)}
-              className="w-full bg-slate-900 border border-slate-700 text-slate-200 text-xs font-bold rounded-xl p-2.5 focus:outline-none focus:border-cyan-500 shadow-sm"
+              className="w-full bg-[#0B0E11] border border-[#2B313A] text-[#EAECEF] text-xs font-bold rounded-xl p-2.5 focus:outline-none focus:border-[#F0B90B] shadow-sm"
             >
               <option value="ROE_QUALITY">💎 ROE &amp; Doanh nghiệp Chất lượng Cao</option>
               <option value="DEEP_VALUE">🏷️ Giá trị Sâu (Thấp P/E &amp; P/B)</option>
@@ -405,24 +405,24 @@ export default function BacktestView() {
       </div>
 
       {/* Equity Curve SVG Chart */}
-      <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-4 shadow-xl">
+      <div className="glass-panel p-6 rounded-2xl border border-[#2B313A] bg-[#12161C] space-y-4 shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-cyan-400" /> Đường cong Vốn Lũy Kế (Cumulative Equity Curve)
+              <Sparkles className="w-4 h-4 text-[#F0B90B]" /> Đường cong Vốn Lũy Kế (Cumulative Equity Curve)
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-[#848E9C] mt-0.5">
               So sánh danh mục chiến lược khởi tạo 100 điểm vs VN-Index Benchmark
             </p>
           </div>
 
           <div className="flex items-center gap-5 text-xs">
-            <div className="flex items-center gap-2 text-cyan-400 font-bold">
-              <span className="w-3 h-3 rounded-full bg-cyan-400 inline-block shadow-sm shadow-cyan-400/50" />
+            <div className="flex items-center gap-2 text-[#F0B90B] font-bold">
+              <span className="w-3 h-3 rounded-full bg-[#F0B90B] inline-block shadow-sm shadow-yellow-500/50" />
               Chiến lược ({strategyType})
             </div>
-            <div className="flex items-center gap-2 text-slate-400 font-medium">
-              <span className="w-3 h-3 rounded-full bg-slate-500 inline-block" />
+            <div className="flex items-center gap-2 text-[#848E9C] font-medium">
+              <span className="w-3 h-3 rounded-full bg-[#474D57] inline-block" />
               VN-INDEX Benchmark
             </div>
           </div>
@@ -430,7 +430,7 @@ export default function BacktestView() {
 
         {/* Interactive SVG Chart */}
         <div className="w-full overflow-x-auto">
-          <div className="min-w-[650px] relative bg-slate-950/70 rounded-xl border border-slate-800/80 p-4">
+          <div className="min-w-[650px] relative bg-[#0B0E11] rounded-xl border border-[#2B313A] p-4">
             <svg
               viewBox={`0 0 ${chartWidth} ${chartHeight}`}
               className="w-full h-56 overflow-visible"
@@ -453,7 +453,7 @@ export default function BacktestView() {
                       x={padding.left - 8}
                       y={y + 3}
                       textAnchor="end"
-                      fill="#64748b"
+                      fill="#848E9C"
                       fontSize="10"
                       fontFamily="monospace"
                     >
@@ -466,8 +466,8 @@ export default function BacktestView() {
               {/* Area fill under Strategy curve */}
               <defs>
                 <linearGradient id="stratGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.25" />
-                  <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.0" />
+                  <stop offset="0%" stopColor="#F0B90B" stopOpacity="0.28" />
+                  <stop offset="100%" stopColor="#F0B90B" stopOpacity="0.0" />
                 </linearGradient>
               </defs>
               <path d={strategyArea} fill="url(#stratGrad)" />
@@ -476,7 +476,7 @@ export default function BacktestView() {
               <path
                 d={benchmarkPath}
                 fill="none"
-                stroke="#64748b"
+                stroke="#848E9C"
                 strokeWidth="2"
                 strokeDasharray="5 4"
               />
@@ -485,7 +485,7 @@ export default function BacktestView() {
               <path
                 d={strategyPath}
                 fill="none"
-                stroke="#22d3ee"
+                stroke="#F0B90B"
                 strokeWidth="3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -503,7 +503,7 @@ export default function BacktestView() {
                       cx={cx}
                       cy={cyStrat}
                       r={isHovered ? 6 : 3.5}
-                      fill="#0891b2"
+                      fill="#F0B90B"
                       stroke="#ffffff"
                       strokeWidth={isHovered ? 2.5 : 1.5}
                       className="transition-all"
@@ -512,7 +512,7 @@ export default function BacktestView() {
                       x={cx}
                       y={chartHeight - 8}
                       textAnchor="middle"
-                      fill="#94a3b8"
+                      fill="#848E9C"
                       fontSize="10"
                       fontWeight="500"
                     >
@@ -526,16 +526,16 @@ export default function BacktestView() {
             {/* Hover Tooltip Card */}
             {hoveredPointIndex !== null && (
               <div
-                className="absolute top-6 left-1/2 -translate-x-1/2 bg-slate-900/95 border border-cyan-500/40 rounded-xl p-3 shadow-2xl text-xs space-y-1 pointer-events-none z-20 backdrop-blur-md"
+                className="absolute top-6 left-1/2 -translate-x-1/2 bg-[#181A20] border border-[#F0B90B]/40 rounded-xl p-3 shadow-2xl text-xs space-y-1 pointer-events-none z-20 backdrop-blur-md"
               >
                 <div className="font-bold text-white">
                   Kỳ {backtestResult.equityPoints[hoveredPointIndex].label} ({backtestResult.equityPoints[hoveredPointIndex].date})
                 </div>
-                <div className="flex items-center justify-between gap-4 text-cyan-400 font-mono-num font-bold">
+                <div className="flex items-center justify-between gap-4 text-[#F0B90B] font-mono-num font-bold">
                   <span>Chiến lược:</span>
                   <span>{backtestResult.equityPoints[hoveredPointIndex].strategy} pts (+{(backtestResult.equityPoints[hoveredPointIndex].strategy - 100).toFixed(1)}%)</span>
                 </div>
-                <div className="flex items-center justify-between gap-4 text-slate-400 font-mono-num">
+                <div className="flex items-center justify-between gap-4 text-[#848E9C] font-mono-num">
                   <span>VN-Index:</span>
                   <span>{backtestResult.equityPoints[hoveredPointIndex].benchmark} pts (+{(backtestResult.equityPoints[hoveredPointIndex].benchmark - 100).toFixed(1)}%)</span>
                 </div>

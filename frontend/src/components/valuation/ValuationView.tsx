@@ -149,33 +149,33 @@ export default function ValuationView({ selectedTicker = "FPT" }: { selectedTick
   return (
     <div className="space-y-6">
       {/* Top Header & Stock Selector */}
-      <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-6 shadow-2xl relative overflow-hidden">
+      <div className="glass-panel p-6 rounded-2xl border border-[#2B313A] bg-[#12161C] space-y-6 shadow-2xl relative overflow-hidden">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
-                <Calculator className="w-3.5 h-3.5 text-yellow-400" /> Trung tâm Định giá Định lượng Đa mô hình
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#F0B90B]/15 text-[#F0B90B] border border-[#F0B90B]/30">
+                <Calculator className="w-3.5 h-3.5 text-[#F0B90B]" /> Trung tâm Định giá Định lượng Đa mô hình
               </div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-800 text-emerald-400 border border-emerald-500/30">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-[#181A20] text-[#0ECB81] border border-[#0ECB81]/30">
+                <span className="w-2 h-2 rounded-full bg-[#0ECB81] animate-pulse" />
                 vnstock Live Data
               </div>
             </div>
             <h2 className="text-2xl font-black text-white tracking-tight">
               Định giá Giá trị Nội tại &amp; Phân tích Biên An toàn
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-[#848E9C] mt-1">
               Tính toán định giá theo Gordon DDM, CAPM Cost of Equity, P/E &amp; P/B Multiples và Chỉ số Graham
             </p>
           </div>
 
           {/* Quick Stock Switcher Dropdown */}
           <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold text-slate-300">Chọn cổ phiếu:</span>
+            <span className="text-xs font-semibold text-[#848E9C]">Chọn cổ phiếu:</span>
             <select
               value={activeTicker}
               onChange={(e) => handleStockChange(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-yellow-500 shadow-md"
+              className="bg-[#0B0E11] border border-[#2B313A] rounded-xl px-4 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-[#F0B90B] shadow-md"
             >
               {VIETNAM_STOCKS.map((s) => {
                 const liveP = liveQuotes[s.ticker]?.price || s.price;
@@ -190,7 +190,7 @@ export default function ValuationView({ selectedTicker = "FPT" }: { selectedTick
         </div>
 
         {/* Model Selection Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-2 border-t border-slate-800">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-2 border-t border-[#2B313A]">
           {[
             { id: "COMPOSITE", label: "🎯 Định giá Tổng hợp (Composite Fair Value)", icon: Sparkles },
             { id: "DDM", label: "💵 Chiết khấu Cổ tức (Gordon DDM + CAPM)", icon: DollarSign },
@@ -204,8 +204,8 @@ export default function ValuationView({ selectedTicker = "FPT" }: { selectedTick
                 onClick={() => setValuationModel(m.id as any)}
                 className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 border ${
                   valuationModel === m.id
-                    ? "bg-yellow-500/20 text-yellow-300 border-yellow-500/50 shadow-md shadow-yellow-500/10"
-                    : "bg-slate-900/60 text-slate-400 border-slate-800 hover:text-slate-200 hover:border-slate-700"
+                    ? "bg-[#F0B90B] text-black border-[#F0B90B] shadow-md shadow-yellow-500/20 font-black"
+                    : "bg-[#181A20] text-[#848E9C] border-[#2B313A] hover:text-white hover:border-[#F0B90B]/40"
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />

@@ -382,19 +382,19 @@ export default function ExpandedRowChart({ stock, onOpenFullAnalysis }: Expanded
   const timeframes = ["1D", "5D", "1M", "3M", "6M", "1Y", "2Y", "5Y", "MAX"];
 
   return (
-    <div className="bg-[#0b101d] border-t border-b border-cyan-500/20 shadow-2xl p-4 md:p-6 transition-all animate-fadeIn">
+    <div className="bg-[#12161C] border-t border-b border-[#F0B90B]/30 shadow-2xl p-4 md:p-6 transition-all animate-fadeIn">
       {/* 1. TOP CONTROLS BAR */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#2B313A]">
         {/* Left: Timeframe Selectors */}
-        <div className="flex items-center gap-1 bg-[#070b14] p-1 rounded-xl border border-white/10">
+        <div className="flex items-center gap-1 bg-[#0B0E11] p-1 rounded-xl border border-[#2B313A]">
           {timeframes.map((tf) => (
             <button
               key={tf}
               onClick={() => setTimeframe(tf)}
               className={`px-2.5 py-1 text-xs font-mono-num font-bold rounded-lg transition-all ${
                 timeframe === tf
-                  ? "bg-slate-700 text-white shadow-sm glow-slate"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
+                  ? "bg-[#F0B90B] text-black shadow-sm font-black"
+                  : "text-[#848E9C] hover:text-white hover:bg-[#181A20]"
               }`}
             >
               {tf}

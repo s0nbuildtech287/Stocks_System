@@ -32,7 +32,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-[#070b14] text-slate-100 font-sans selection:bg-emerald-500/30 selection:text-emerald-300">
+      <body className="min-h-screen bg-[#0B0E11] text-[#EAECEF] font-sans selection:bg-[#F0B90B]/30 selection:text-[#FCD535]">
         {children}
       </body>
     </html>

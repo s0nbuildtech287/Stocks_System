@@ -248,25 +248,25 @@ export default function ScreenerView({ onSelectTicker }: { onSelectTicker?: (tic
   return (
     <div className="space-y-6">
       {/* Top Banner & Quick Presets */}
-      <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-6 shadow-2xl relative overflow-hidden">
-        <div className="absolute -top-24 -right-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="glass-panel p-6 rounded-2xl border border-[#2B313A] bg-[#12161C] space-y-6 shadow-2xl relative overflow-hidden">
+        <div className="absolute -top-24 -right-24 w-72 h-72 bg-yellow-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 relative z-10">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                <Flame className="w-3.5 h-3.5 text-emerald-400" /> Hệ thống Lọc Cổ phiếu Chuyên sâu
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#F0B90B]/15 text-[#F0B90B] border border-[#F0B90B]/30">
+                <Flame className="w-3.5 h-3.5 text-[#F0B90B]" /> Hệ thống Lọc Cổ phiếu Chuyên sâu
               </div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-800/80 text-emerald-400 border border-emerald-500/30">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-[#181A20] text-[#0ECB81] border border-[#0ECB81]/30">
+                <span className="w-2 h-2 rounded-full bg-[#0ECB81] animate-pulse" />
                 vnstock Real-time Live Sync {lastSyncTime && `(${lastSyncTime})`}
               </div>
             </div>
-            <h2 className="text-2xl font-extrabold text-white tracking-tight">
+            <h2 className="text-2xl font-black text-white tracking-tight">
               Screener Đa Chiều &amp; Xếp Hạng Định Lượng
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-[#848E9C] mt-1">
               Dữ liệu Point-in-time cuối ngày từ vnstock, chuẩn hóa 100% theo quy ước tài chính thị trường Việt Nam
             </p>
           </div>
@@ -277,7 +277,7 @@ export default function ScreenerView({ onSelectTicker }: { onSelectTicker?: (tic
               <button
                 key={p.id}
                 onClick={p.apply}
-                className="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700/80 hover:border-emerald-500/40 hover:text-emerald-300 transition-all shadow-sm flex items-center gap-1.5"
+                className="px-3 py-2 rounded-xl text-xs font-semibold bg-[#181A20] hover:bg-[#2B313A] text-[#EAECEF] border border-[#2B313A] hover:border-[#F0B90B]/50 hover:text-[#FCD535] transition-all shadow-sm flex items-center gap-1.5"
                 title={p.desc}
               >
                 <span>{p.name.split(" ")[0]}</span>
@@ -287,7 +287,7 @@ export default function ScreenerView({ onSelectTicker }: { onSelectTicker?: (tic
 
             <button
               onClick={resetFilters}
-              className="p-2 rounded-xl text-xs text-slate-400 hover:text-slate-200 bg-slate-800/40 hover:bg-slate-800 border border-slate-700/60 transition-colors"
+              className="p-2 rounded-xl text-xs text-[#848E9C] hover:text-white bg-[#181A20] hover:bg-[#2B313A] border border-[#2B313A] transition-colors"
               title="Đặt lại toàn bộ bộ lọc"
             >
               <RotateCcw className="w-4 h-4" />
@@ -477,10 +477,10 @@ export default function ScreenerView({ onSelectTicker }: { onSelectTicker?: (tic
             <button
               key={ind.id}
               onClick={() => setSelectedIndustry(ind.id)}
-              className={`px-3 py-1.5 rounded-xl font-medium whitespace-nowrap transition-all border ${
+              className={`px-3 py-1.5 rounded-xl font-bold whitespace-nowrap transition-all border ${
                 selectedIndustry === ind.id
-                  ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-sm"
-                  : "bg-slate-900/60 text-slate-400 border-slate-800 hover:text-slate-200 hover:border-slate-700"
+                  ? "bg-[#F0B90B] text-black border-[#F0B90B] shadow-md shadow-yellow-500/20 font-black"
+                  : "bg-[#181A20] text-[#848E9C] border-[#2B313A] hover:text-white hover:border-[#F0B90B]/40"
               }`}
             >
               {ind.label}
@@ -491,31 +491,31 @@ export default function ScreenerView({ onSelectTicker }: { onSelectTicker?: (tic
 
       {/* Summary KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="p-4 rounded-xl glass-card border border-white/5">
-          <span className="text-xs text-slate-400 font-medium">Số mã thỏa mãn</span>
+        <div className="p-4 rounded-xl glass-card border border-[#2B313A] bg-[#12161C]">
+          <span className="text-xs text-[#848E9C] font-medium">Số mã thỏa mãn</span>
           <div className="text-2xl font-black text-white mt-1 font-mono-num">
             {filteredStocks.length}{" "}
-            <span className="text-xs text-slate-500 font-normal">/ {VIETNAM_STOCKS.length} mã</span>
+            <span className="text-xs text-[#848E9C] font-normal">/ {VIETNAM_STOCKS.length} mã</span>
           </div>
         </div>
 
-        <div className="p-4 rounded-xl glass-card border border-white/5">
-          <span className="text-xs text-slate-400 font-medium">ROE TTM Trung bình</span>
-          <div className="text-2xl font-black text-emerald-400 mt-1 font-mono-num">
+        <div className="p-4 rounded-xl glass-card border border-[#2B313A] bg-[#12161C]">
+          <span className="text-xs text-[#848E9C] font-medium">ROE TTM Trung bình</span>
+          <div className="text-2xl font-black text-[#0ECB81] mt-1 font-mono-num">
             {avgRoe.toFixed(1)}%
           </div>
         </div>
 
-        <div className="p-4 rounded-xl glass-card border border-white/5">
-          <span className="text-xs text-slate-400 font-medium">P/E Trung vị</span>
-          <div className="text-2xl font-black text-cyan-400 mt-1 font-mono-num">
+        <div className="p-4 rounded-xl glass-card border border-[#2B313A] bg-[#12161C]">
+          <span className="text-xs text-[#848E9C] font-medium">P/E Trung vị</span>
+          <div className="text-2xl font-black text-[#F0B90B] mt-1 font-mono-num">
             {medianPe.toFixed(1)}x
           </div>
         </div>
 
-        <div className="p-4 rounded-xl glass-card border border-white/5">
-          <span className="text-xs text-slate-400 font-medium">Tổng vốn hóa lọc</span>
-          <div className="text-2xl font-black text-blue-400 mt-1 font-mono-num">
+        <div className="p-4 rounded-xl glass-card border border-[#2B313A] bg-[#12161C]">
+          <span className="text-xs text-[#848E9C] font-medium">Tổng vốn hóa lọc</span>
+          <div className="text-2xl font-black text-white mt-1 font-mono-num">
             {(totalMarketCap / 1000).toFixed(0)}k Tỷ
           </div>
         </div>

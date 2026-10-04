@@ -261,22 +261,22 @@ export default function PaperTradingView() {
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-4 shadow-2xl relative overflow-hidden">
+      <div className="glass-panel p-6 rounded-2xl border border-[#2B313A] bg-[#12161C] space-y-4 shadow-2xl relative overflow-hidden">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                <Briefcase className="w-3.5 h-3.5 text-emerald-400" /> Hệ thống Giao dịch Giả lập Real-time
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#F0B90B]/15 text-[#F0B90B] border border-[#F0B90B]/30">
+                <Briefcase className="w-3.5 h-3.5 text-[#F0B90B]" /> Hệ thống Giao dịch Giả lập Real-time
               </div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-800 text-emerald-400 border border-emerald-500/30">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-[#181A20] text-[#0ECB81] border border-[#0ECB81]/30">
+                <span className="w-2 h-2 rounded-full bg-[#0ECB81] animate-pulse" />
                 vnstock Live Pricing Engine
               </div>
             </div>
             <h2 className="text-2xl font-black text-white tracking-tight">
               Paper Trading &amp; Quản lý Danh mục Ảo
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-[#848E9C] mt-1">
               Thực hành giao dịch với giá khớp lệnh thực tế từ sàn HSX/HNX, tính toán chuẩn thuế phí 0.25%
             </p>
           </div>
@@ -284,7 +284,7 @@ export default function PaperTradingView() {
           <div className="flex items-center gap-3">
             <button
               onClick={handleResetPortfolio}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition-colors shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#181A20] hover:bg-[#2B313A] text-[#EAECEF] text-xs font-semibold border border-[#2B313A] transition-colors shadow-sm"
               title="Đặt lại số dư 100M VND"
             >
               <RotateCcw className="w-3.5 h-3.5" /> Đặt lại Danh mục
@@ -293,36 +293,36 @@ export default function PaperTradingView() {
         </div>
 
         {/* Portfolio KPI Summary */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-2 border-t border-slate-800">
-          <div className="p-4 rounded-xl glass-card border border-white/5 space-y-1">
-            <span className="text-xs text-slate-400 font-medium">Tiền mặt khả dụng</span>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-2 border-t border-[#2B313A]">
+          <div className="p-4 rounded-xl glass-card border border-[#2B313A] bg-[#181A20] space-y-1">
+            <span className="text-xs text-[#848E9C] font-medium">Tiền mặt khả dụng</span>
             <div className="text-2xl font-black text-white font-mono-num">
               {cash.toLocaleString("vi-VN")} đ
             </div>
-            <span className="text-[11px] text-slate-500 block">Sức mua khả dụng</span>
+            <span className="text-[11px] text-[#848E9C] block">Sức mua khả dụng</span>
           </div>
 
-          <div className="p-4 rounded-xl glass-card border border-white/5 space-y-1">
-            <span className="text-xs text-slate-400 font-medium">Giá trị Cổ phiếu</span>
-            <div className="text-2xl font-black text-cyan-400 font-mono-num">
+          <div className="p-4 rounded-xl glass-card border border-[#2B313A] bg-[#181A20] space-y-1">
+            <span className="text-xs text-[#848E9C] font-medium">Giá trị Cổ phiếu</span>
+            <div className="text-2xl font-black text-[#F0B90B] font-mono-num">
               {totalStockValue.toLocaleString("vi-VN")} đ
             </div>
-            <span className="text-[11px] text-slate-500 block">{positions.length} mã đang nắm giữ</span>
+            <span className="text-[11px] text-[#848E9C] block">{positions.length} mã đang nắm giữ</span>
           </div>
 
-          <div className="p-4 rounded-xl glass-card border border-white/5 space-y-1">
-            <span className="text-xs text-slate-400 font-medium">Tổng tài sản (NAV)</span>
+          <div className="p-4 rounded-xl glass-card border border-[#2B313A] bg-[#181A20] space-y-1">
+            <span className="text-xs text-[#848E9C] font-medium">Tổng tài sản (NAV)</span>
             <div className="text-2xl font-black text-white font-mono-num">
               {totalNAV.toLocaleString("vi-VN")} đ
             </div>
-            <span className="text-[11px] text-slate-500 block">Vốn khởi tạo: 100,000,000 đ</span>
+            <span className="text-[11px] text-[#848E9C] block">Vốn khởi tạo: 100,000,000 đ</span>
           </div>
 
-          <div className="p-4 rounded-xl glass-card border border-white/5 space-y-1">
-            <span className="text-xs text-slate-400 font-medium">Tổng Lãi / Lỗ ròng</span>
+          <div className="p-4 rounded-xl glass-card border border-[#2B313A] bg-[#181A20] space-y-1">
+            <span className="text-xs text-[#848E9C] font-medium">Tổng Lãi / Lỗ ròng</span>
             <div
               className={`text-2xl font-black font-mono-num ${
-                totalProfit >= 0 ? "text-emerald-400" : "text-red-400"
+                totalProfit >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
               }`}
             >
               {totalProfit >= 0 ? "+" : ""}
@@ -330,7 +330,7 @@ export default function PaperTradingView() {
             </div>
             <span
               className={`text-[11px] font-bold block ${
-                totalProfit >= 0 ? "text-emerald-400" : "text-red-400"
+                totalProfit >= 0 ? "text-[#0ECB81]" : "text-[#F6465D]"
               }`}
             >
               {totalProfitPct >= 0 ? "+" : ""}

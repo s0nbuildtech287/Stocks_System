@@ -48,26 +48,26 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#070b14] text-slate-100 font-sans">
-      {/* 1. VERTICAL LEFT SIDEBAR NAVIGATOR */}
+    <div className="flex h-screen w-screen overflow-hidden bg-[#0B0E11] text-[#EAECEF] font-sans">
+      {/* 1. VERTICAL LEFT SIDEBAR NAVIGATOR (BINANCE GOLD & BLACK) */}
       <aside
-        className={`border-r border-white/10 bg-[#090e1a]/95 backdrop-blur-2xl flex flex-col justify-between shrink-0 transition-all duration-300 z-40 ${
+        className={`border-r border-[#2B313A] bg-[#12161C] flex flex-col justify-between shrink-0 transition-all duration-300 z-40 ${
           sidebarCollapsed ? "w-20" : "w-72"
         }`}
       >
         {/* Brand Logo */}
-        <div className="p-5 border-b border-white/5 flex items-center justify-between">
+        <div className="p-5 border-b border-[#2B313A] flex items-center justify-between bg-[#0B0E11]/60">
           <div className="flex items-center gap-3 overflow-hidden">
-            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-emerald-500/20 shrink-0 border border-emerald-500/30 bg-[#070b14] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-yellow-500/20 shrink-0 border border-[#F0B90B]/50 bg-[#181A20] flex items-center justify-center p-0.5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo.svg" alt="Stock System Logo" className="w-full h-full object-cover" />
             </div>
             {!sidebarCollapsed && (
               <div className="leading-tight truncate">
-                <span className="text-base font-black tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent block">
-                  Stock System
+                <span className="text-base font-black tracking-tight text-white block">
+                  STOCK <span className="text-[#F0B90B]">SYSTEM</span>
                 </span>
-                <span className="text-[10px] text-slate-400 font-medium tracking-wide">
+                <span className="text-[10px] text-[#848E9C] font-semibold tracking-wider uppercase">
                   Quantitative Terminal
                 </span>
               </div>
@@ -77,7 +77,7 @@ export default function HomePage() {
 
         {/* Navigation Links */}
         <div className="flex-1 py-4 px-3 space-y-1.5 overflow-y-auto">
-          <div className="px-3 pb-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
+          <div className="px-3 pb-1 text-[10px] font-extrabold uppercase tracking-wider text-[#848E9C]">
             {!sidebarCollapsed ? "Analysis Modules" : "Menu"}
           </div>
 
@@ -91,40 +91,40 @@ export default function HomePage() {
                 onClick={() => setActiveTab(item.id as any)}
                 className={`w-full group rounded-xl transition-all text-left flex items-center gap-3 p-3 relative ${
                   isActive
-                    ? "bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-transparent text-white border-l-4 border-emerald-400 shadow-sm"
-                    : "text-slate-400 hover:text-slate-100 hover:bg-slate-800/40 border-l-4 border-transparent"
+                    ? "bg-[#F0B90B]/15 text-[#FCD535] border-l-4 border-[#F0B90B] shadow-sm font-bold"
+                    : "text-[#848E9C] hover:text-white hover:bg-[#181A20] border-l-4 border-transparent font-medium"
                 }`}
                 title={sidebarCollapsed ? item.label : undefined}
               >
                 <div
-                  className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                  className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-all ${
                     isActive
-                      ? "bg-emerald-500 text-slate-950 shadow-md glow-emerald"
-                      : "bg-slate-800/60 text-slate-400 group-hover:text-slate-200 group-hover:bg-slate-800"
+                      ? "bg-[#F0B90B] text-black shadow-md shadow-yellow-500/30"
+                      : "bg-[#181A20] text-[#848E9C] group-hover:text-[#F0B90B] group-hover:bg-[#2B313A]"
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-4 h-4 font-bold" />
                 </div>
 
                 {!sidebarCollapsed && (
                   <div className="flex-1 truncate">
                     <div className="flex items-center justify-between">
-                      <span className={`text-xs font-bold ${isActive ? "text-white" : "text-slate-300"}`}>
+                      <span className={`text-xs ${isActive ? "text-white font-extrabold" : "text-[#EAECEF]"}`}>
                         {item.label}
                       </span>
                       {item.badge && (
                         <span
                           className={`text-[9px] font-black px-1.5 py-0.5 rounded ${
                             isActive
-                              ? "bg-emerald-500/30 text-emerald-300"
-                              : "bg-slate-800 text-slate-400"
+                              ? "bg-[#F0B90B] text-black font-extrabold"
+                              : "bg-[#181A20] text-[#848E9C] border border-[#2B313A]"
                           }`}
                         >
                           {item.badge}
                         </span>
                       )}
                     </div>
-                    <span className="text-[10px] text-slate-500 block truncate mt-0.5">
+                    <span className="text-[10px] text-[#848E9C] block truncate mt-0.5">
                       {item.desc}
                     </span>
                   </div>
@@ -135,12 +135,12 @@ export default function HomePage() {
 
           {/* Quick Pinned Watchlist in Sidebar */}
           {!sidebarCollapsed && (
-            <div className="pt-5 border-t border-white/5 space-y-2">
-              <div className="px-3 flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
+            <div className="pt-5 border-t border-[#2B313A] space-y-2">
+              <div className="px-3 flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-[#848E9C]">
                 <span className="flex items-center gap-1">
-                  <Zap className="w-3 h-3 text-yellow-400" /> Quick Watchlist
+                  <Zap className="w-3 h-3 text-[#F0B90B]" /> Quick Watchlist
                 </span>
-                <span className="text-slate-600 font-normal">Select</span>
+                <span className="text-[#848E9C] font-normal">Select</span>
               </div>
 
               <div className="grid grid-cols-3 gap-1.5 px-1">
@@ -155,12 +155,12 @@ export default function HomePage() {
                       onClick={() => handleSelectTicker(ticker)}
                       className={`p-2 rounded-xl text-center border transition-all ${
                         isSelected
-                          ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/60 font-black shadow-sm"
-                          : "bg-slate-900/60 text-slate-300 border-slate-800/80 hover:border-slate-700 hover:text-white"
+                          ? "bg-[#F0B90B]/20 text-[#FCD535] border-[#F0B90B]/70 font-black shadow-sm"
+                          : "bg-[#181A20] text-[#EAECEF] border-[#2B313A] hover:border-[#F0B90B]/40 hover:text-white"
                       }`}
                     >
                       <div className="text-[11px] font-bold">{ticker}</div>
-                      <div className={`text-[9px] font-mono-num font-semibold ${isUp ? "text-emerald-400" : "text-red-400"}`}>
+                      <div className={`text-[9px] font-mono-num font-semibold ${isUp ? "text-[#0ECB81]" : "text-[#F6465D]"}`}>
                         {isUp ? "+" : ""}{stock?.changePct.toFixed(1)}%
                       </div>
                     </button>
@@ -172,65 +172,65 @@ export default function HomePage() {
         </div>
 
         {/* Bottom System Status */}
-        <div className="p-4 border-t border-white/5 bg-slate-950/40">
+        <div className="p-4 border-t border-[#2B313A] bg-[#0B0E11]/80">
           {!sidebarCollapsed ? (
             <div className="space-y-2 text-xs">
               <div className="flex items-center justify-between text-[11px]">
-                <span className="text-slate-400 flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> vnstock API
+                <span className="text-[#848E9C] flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#0ECB81] animate-pulse" /> vnstock API
                 </span>
-                <span className="font-mono-num text-emerald-400 font-bold">Connected</span>
+                <span className="font-mono-num text-[#0ECB81] font-bold">Connected</span>
               </div>
-              <div className="text-[10px] text-slate-500 flex items-center justify-between">
+              <div className="text-[10px] text-[#848E9C] flex items-center justify-between">
                 <span>Dữ liệu Point-in-time</span>
-                <span className="text-slate-400 font-mono-num">EOD Ready</span>
+                <span className="text-[#EAECEF] font-mono-num">EOD Ready</span>
               </div>
             </div>
           ) : (
             <div className="flex justify-center">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" title="System Connected" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#0ECB81] animate-pulse" title="System Connected" />
             </div>
           )}
         </div>
       </aside>
 
       {/* 2. MAIN RIGHT CONTENT CONTAINER (FLUID & FULL SCREEN) */}
-      <div className="flex-1 flex flex-col h-screen overflow-hidden">
+      <div className="flex-1 flex flex-col h-screen overflow-hidden bg-[#0B0E11]">
         {/* Top Ticker Tape Bar */}
-        <header className="h-12 border-b border-white/10 bg-[#090e1a]/80 backdrop-blur-md px-6 flex items-center justify-between shrink-0">
+        <header className="h-12 border-b border-[#2B313A] bg-[#12161C] px-6 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-6 overflow-x-auto text-xs font-mono-num whitespace-nowrap">
-            <div className="flex items-center gap-2 text-slate-300 font-bold">
-              <Radio className="w-3.5 h-3.5 text-red-500 animate-pulse" />
+            <div className="flex items-center gap-2 text-[#EAECEF] font-bold">
+              <Radio className="w-3.5 h-3.5 text-[#F6465D] animate-pulse" />
               <span>VN-INDEX</span>
               <span className="text-white">1,280.50</span>
-              <span className="text-emerald-400 font-bold">+12.30 (+0.97%)</span>
+              <span className="text-[#0ECB81] font-bold">+12.30 (+0.97%)</span>
             </div>
 
-            <div className="flex items-center gap-2 text-slate-300 font-bold">
+            <div className="flex items-center gap-2 text-[#EAECEF] font-bold">
               <span>VN30</span>
               <span className="text-white">1,345.80</span>
-              <span className="text-emerald-400 font-bold">+15.60 (+1.17%)</span>
+              <span className="text-[#0ECB81] font-bold">+15.60 (+1.17%)</span>
             </div>
 
-            <div className="flex items-center gap-2 text-slate-400">
+            <div className="flex items-center gap-2 text-[#848E9C]">
               <span>HNX:</span>
               <span className="text-white font-bold">235.40</span>
-              <span className="text-emerald-400">+0.77%</span>
+              <span className="text-[#0ECB81]">+0.77%</span>
             </div>
 
-            <div className="flex items-center gap-2 text-slate-400">
+            <div className="flex items-center gap-2 text-[#848E9C]">
               <span>HOSE Value:</span>
-              <span className="text-yellow-400 font-bold">18,450 Tỷ</span>
+              <span className="text-[#F0B90B] font-bold">18,450 Tỷ</span>
             </div>
 
-            <div className="flex items-center gap-2 text-slate-400">
+            <div className="flex items-center gap-2 text-[#848E9C]">
               <span>TPCP 10Y:</span>
-              <span className="text-cyan-400 font-bold">2.85%</span>
+              <span className="text-[#FCD535] font-bold">2.85%</span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <div className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-[#F0B90B]/15 text-[#F0B90B] border border-[#F0B90B]/30">
               EOD Point-in-time
             </div>
           </div>
@@ -252,14 +252,14 @@ export default function HomePage() {
         </main>
 
         {/* Bottom Disclaimer Footer */}
-        <footer className="h-9 border-t border-white/5 bg-[#050810] px-6 flex items-center justify-between text-[11px] text-slate-500 shrink-0">
+        <footer className="h-9 border-t border-[#2B313A] bg-[#0B0E11] px-6 flex items-center justify-between text-[11px] text-[#848E9C] shrink-0">
           <div className="flex items-center gap-2 truncate">
-            <ShieldAlert className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+            <ShieldAlert className="w-3.5 h-3.5 text-[#F0B90B] shrink-0" />
             <span className="truncate">
               <strong>Disclaimer:</strong> Nền tảng Stock System phục vụ học tập &amp; nghiên cứu định lượng. Dữ liệu cuối ngày không phải khuyến nghị đầu tư.
             </span>
           </div>
-          <div className="whitespace-nowrap font-mono-num text-[10px] pl-4">Stock System v1.0.0 © 2026</div>
+          <div className="whitespace-nowrap font-mono-num text-[10px] pl-4 text-[#848E9C]">Stock System v1.0.0 © 2026</div>
         </footer>
       </div>
     </div>
