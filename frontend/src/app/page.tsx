@@ -58,8 +58,9 @@ export default function HomePage() {
         {/* Brand Logo */}
         <div className="p-5 border-b border-white/5 flex items-center justify-between">
           <div className="flex items-center gap-3 overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20 shrink-0 text-base">
-              SS
+            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-emerald-500/20 shrink-0 border border-emerald-500/30 bg-[#070b14] flex items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.svg" alt="Stock System Logo" className="w-full h-full object-cover" />
             </div>
             {!sidebarCollapsed && (
               <div className="leading-tight truncate">
