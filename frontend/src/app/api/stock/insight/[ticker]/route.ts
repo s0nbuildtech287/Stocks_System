@@ -23,10 +23,13 @@ export async function GET(
     return NextResponse.json({ source: "cache", data: cached.data });
   }
 
+  const rootDir = path.resolve(process.cwd(), "..");
+
   try {
-    const scriptPath = path.resolve(process.cwd(), "..", "fetch_stock_deep_dive.py");
+    const scriptPath = path.resolve(rootDir, "fetch_stock_deep_dive.py");
     const { stdout } = await execPromise(`python "${scriptPath}" --ticker ${ticker}`, {
-      timeout: 10000,
+      cwd: rootDir,
+      timeout: 15000,
       encoding: "utf8",
     });
 
@@ -35,6 +38,7 @@ export async function GET(
 
     return NextResponse.json({ source: "live", data });
   } catch (error: any) {
+    console.error("Error executing fetch_stock_deep_dive.py:", error);
     if (cached) {
       return NextResponse.json({ source: "stale-cache", data: cached.data });
     }
