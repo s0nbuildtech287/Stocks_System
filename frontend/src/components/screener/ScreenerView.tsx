@@ -48,14 +48,15 @@ export default function ScreenerView({ onSelectTicker }: { onSelectTicker?: (tic
       try {
         const res = await fetch("/api/quotes/live");
         if (res.ok) {
-          const data = await res.json();
-          if (data.success && data.quotes) {
-            const map: Record<string, any> = {};
-            data.quotes.forEach((q: any) => {
-              map[q.ticker] = q;
-            });
-            setLiveQuotes(map);
-            setLastSyncTime(data.asOfDate || new Date().toLocaleTimeString("vi-VN"));
+          const json = await res.json();
+          if (json && json.data) {
+            setLiveQuotes(json.data);
+            const firstKey = Object.keys(json.data)[0];
+            if (firstKey && json.data[firstKey].date) {
+              setLastSyncTime(json.data[firstKey].date);
+            } else {
+              setLastSyncTime(new Date().toLocaleTimeString("vi-VN"));
+            }
           }
         }
       } catch (e) {

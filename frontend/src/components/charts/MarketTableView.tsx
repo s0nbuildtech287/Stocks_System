@@ -449,7 +449,7 @@ export default function MarketTableView({ initialExpandedTicker, onSelectTickerF
                 >
                   <div className="flex items-center justify-end gap-1">
                     <span>LAST PRICE</span>
-                    {sortField === "price" && <ArrowUpDown className="w-3 h-3 text-emerald-400" />}
+                    {sortField === "price" && <ArrowUpDown className="w-3 h-3 text-[#F0B90B]" />}
                   </div>
                 </th>
 
@@ -459,7 +459,7 @@ export default function MarketTableView({ initialExpandedTicker, onSelectTickerF
                 >
                   <div className="flex items-center justify-end gap-1">
                     <span>CHG (24H)</span>
-                    {sortField === "changePct" && <ArrowUpDown className="w-3 h-3 text-emerald-400" />}
+                    {sortField === "changePct" && <ArrowUpDown className="w-3 h-3 text-[#F0B90B]" />}
                   </div>
                 </th>
 
@@ -469,7 +469,7 @@ export default function MarketTableView({ initialExpandedTicker, onSelectTickerF
                 >
                   <div className="flex items-center justify-end gap-1">
                     <span>VOLUME (24H)</span>
-                    {sortField === "volume20d" && <ArrowUpDown className="w-3 h-3 text-emerald-400" />}
+                    {sortField === "volume20d" && <ArrowUpDown className="w-3 h-3 text-[#F0B90B]" />}
                   </div>
                 </th>
 
@@ -479,14 +479,14 @@ export default function MarketTableView({ initialExpandedTicker, onSelectTickerF
                 >
                   <div className="flex items-center justify-end gap-1">
                     <span>VALUE (24H)</span>
-                    {sortField === "value20d" && <ArrowUpDown className="w-3 h-3 text-emerald-400" />}
+                    {sortField === "value20d" && <ArrowUpDown className="w-3 h-3 text-[#F0B90B]" />}
                   </div>
                 </th>
 
                 <th className="py-3.5 px-4 text-center min-w-[160px]">52W RANGE</th>
 
                 <th className="py-3.5 px-4 text-center min-w-[190px]">
-                  <div className="flex items-center justify-center gap-1 text-cyan-400">
+                  <div className="flex items-center justify-center gap-1 text-[#F0B90B]">
                     <TrendingUp className="w-3.5 h-3.5" />
                     <span>MACRO TREND (52W)</span>
                   </div>

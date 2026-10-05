@@ -44,13 +44,9 @@ export default function ValuationView({ selectedTicker = "FPT" }: { selectedTick
       try {
         const res = await fetch("/api/quotes/live");
         if (res.ok) {
-          const data = await res.json();
-          if (data.success && data.quotes) {
-            const map: Record<string, any> = {};
-            data.quotes.forEach((q: any) => {
-              map[q.ticker] = q;
-            });
-            setLiveQuotes(map);
+          const json = await res.json();
+          if (json && json.data) {
+            setLiveQuotes(json.data);
           }
         }
       } catch (e) {
