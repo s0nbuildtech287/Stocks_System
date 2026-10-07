@@ -17,6 +17,8 @@ import {
   Zap,
   Globe,
   Radio,
+  Scale,
+  PieChart,
   Sliders,
   ChevronRight,
   HelpCircle,
@@ -28,10 +30,14 @@ import ValuationView from "@/components/valuation/ValuationView";
 import PaperTradingView from "@/components/papertrading/PaperTradingView";
 import BacktestView from "@/components/backtest/BacktestView";
 import StockInsightView from "@/components/insight/StockInsightView";
+import PeerComparisonView from "@/components/peers/PeerComparisonView";
+import PortfolioOptimizerView from "@/components/portfolio/PortfolioOptimizerView";
 import { VIETNAM_STOCKS } from "@/lib/stockData";
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState<"overview" | "insight" | "screener" | "papertrading" | "backtest" | "valuation">("overview");
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "insight" | "peers" | "screener" | "optimizer" | "papertrading" | "backtest" | "valuation"
+  >("overview");
   const [selectedTicker, setSelectedTicker] = useState<string | undefined>(undefined);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
@@ -43,9 +49,11 @@ export default function HomePage() {
   const navItems = [
     { id: "overview", label: "Market", badge: "Live", icon: TrendingUp, desc: "Biểu đồ nến & bảng giá thời gian thực" },
     { id: "insight", label: "Insight", badge: "360°", icon: Sparkles, desc: "Hồ sơ, chỉ số tài chính & tin tức" },
+    { id: "peers", label: "Peers", badge: "Radar", icon: Scale, desc: "So sánh ngang hàng cùng ngành & radar" },
     { id: "screener", label: "Screener", badge: "Pro", icon: Filter, desc: "Bộ lọc kỹ thuật & cơ bản" },
+    { id: "optimizer", label: "Optimizer", badge: "Quant", icon: PieChart, desc: "Tối ưu danh mục Markowitz & VaR" },
     { id: "papertrading", label: "Paper Trade", badge: "T+2", icon: Briefcase, desc: "Nhật ký & giao dịch mô phỏng" },
-    { id: "backtest", label: "Backtest", badge: "Quant", icon: LineChart, desc: "Kiểm thử chiến lược đa yếu tố" },
+    { id: "backtest", label: "Backtest", badge: "Engine", icon: LineChart, desc: "Kiểm thử chiến lược đa yếu tố" },
     { id: "valuation", label: "Valuation", badge: "Model", icon: BarChart3, desc: "Mô hình định giá CAPM, DDM" },
   ];
 
@@ -254,10 +262,13 @@ export default function HomePage() {
             />
           )}
 
+          {activeTab === "peers" && <PeerComparisonView />}
+
           {activeTab === "screener" && (
             <ScreenerView onSelectTicker={handleSelectTicker} />
           )}
 
+          {activeTab === "optimizer" && <PortfolioOptimizerView />}
           {activeTab === "papertrading" && <PaperTradingView />}
           {activeTab === "backtest" && <BacktestView />}
           {activeTab === "valuation" && <ValuationView selectedTicker={selectedTicker} />}
