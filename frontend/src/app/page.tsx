@@ -23,6 +23,7 @@ import {
   ChevronRight,
   HelpCircle,
   Database,
+  Eye,
 } from "lucide-react";
 import MarketTableView from "@/components/charts/MarketTableView";
 import ScreenerView from "@/components/screener/ScreenerView";
@@ -32,9 +33,11 @@ import BacktestView from "@/components/backtest/BacktestView";
 import StockInsightView from "@/components/insight/StockInsightView";
 import PeerComparisonView from "@/components/peers/PeerComparisonView";
 import PortfolioOptimizerView from "@/components/portfolio/PortfolioOptimizerView";
+import IntroHeroView from "@/components/intro/IntroHeroView";
 import { VIETNAM_STOCKS } from "@/lib/stockData";
 
 export default function HomePage() {
+  const [showIntro, setShowIntro] = useState(true);
   const [activeTab, setActiveTab] = useState<
     "overview" | "insight" | "peers" | "screener" | "optimizer" | "papertrading" | "backtest" | "valuation"
   >("overview");
@@ -56,6 +59,11 @@ export default function HomePage() {
     { id: "backtest", label: "Backtest", badge: "Engine", icon: LineChart, desc: "Kiểm thử chiến lược đa yếu tố" },
     { id: "valuation", label: "Valuation", badge: "Model", icon: BarChart3, desc: "Mô hình định giá CAPM, DDM" },
   ];
+
+  // If user is viewing Intro Landing Page
+  if (showIntro) {
+    return <IntroHeroView onEnterTerminal={() => setShowIntro(false)} />;
+  }
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[#0B0E11] text-[#EAECEF] font-sans">
@@ -87,6 +95,16 @@ export default function HomePage() {
 
         {/* Navigation Links */}
         <div className="flex-1 py-4 px-3 space-y-1.5 overflow-y-auto">
+          {/* Quick Back to 3D Intro Button */}
+          <button
+            onClick={() => setShowIntro(true)}
+            className="w-full mb-3 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[#F0B90B]/15 to-[#F0B90B]/5 hover:from-[#F0B90B]/25 hover:to-[#F0B90B]/15 text-[#F0B90B] border border-[#F0B90B]/40 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
+            title="Xem lại trang giới thiệu 3D"
+          >
+            <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+            {!sidebarCollapsed && <span>Trang Giới Thiệu 3D</span>}
+          </button>
+
           <div className="px-3 pb-1 text-[10px] font-extrabold uppercase tracking-wider text-[#848E9C]">
             {!sidebarCollapsed ? "Analysis Modules" : "Menu"}
           </div>
@@ -154,7 +172,7 @@ export default function HomePage() {
               </div>
 
               <div className="grid grid-cols-3 gap-1.5 px-1">
-                {["FPT", "HPG", "TCB", "MBB", "MWG", "SSI", "VNM", "VHM", "GAS"].map((ticker) => {
+                {["FPT", "PNJ", "HPG", "TCB", "MBB", "MWG", "SSI", "VNM", "GAS"].map((ticker) => {
                   const stock = VIETNAM_STOCKS.find((s) => s.ticker === ticker);
                   const isSelected = selectedTicker === ticker;
                   const isUp = (stock?.changePct ?? 0) >= 0;
@@ -171,7 +189,7 @@ export default function HomePage() {
                     >
                       <div className="text-[11px] font-bold">{ticker}</div>
                       <div className={`text-[9px] font-mono-num font-semibold ${isUp ? "text-[#0ECB81]" : "text-[#F6465D]"}`}>
-                        {isUp ? "+" : ""}{stock?.changePct.toFixed(1)}%
+                        {isUp ? "+" : ""}{stock?.changePct ? stock.changePct.toFixed(1) : "0.0"}%
                       </div>
                     </button>
                   );
@@ -240,6 +258,13 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowIntro(true)}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#181A20] hover:bg-[#2B313A] text-xs text-[#F0B90B] border border-[#F0B90B]/30 font-semibold transition-all cursor-pointer"
+            >
+              <Sparkles className="w-3 h-3" />
+              <span>Giới Thiệu 3D</span>
+            </button>
             <div className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-[#F0B90B]/15 text-[#F0B90B] border border-[#F0B90B]/30">
               EOD Point-in-time
             </div>
