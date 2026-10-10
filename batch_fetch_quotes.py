@@ -4,11 +4,12 @@ from datetime import datetime, timedelta
 from vnstock import Quote
 
 STOCKS = [
-    "FPT", "HPG", "VHM", "VIC", "VNM", "TCB", "MBB", "VPB", "MWG", "SSI",
-    "GAS", "MSN", "STB", "VCB", "BID", "CTG", "ACB", "TPB", "HDB", "VIB",
-    "LPB", "SHB", "PLX", "SAB", "VRE", "BVH", "GVR", "POW", "BCM", "SSB",
-    "DGC", "FRT", "VCI", "HCM", "VND", "NKG", "HSG", "KDH", "PDR", "DIG",
-    "DXG", "KBC", "IDC", "REE", "GMD", "PVT", "PVD", "PVS", "DPM", "DCM"
+    "FPT", "HPG", "TCB", "MBB", "MWG", "VCB", "ACB", "SSI", "CTG", "VPB",
+    "STB", "VNM", "MSN", "GAS", "VHM", "VIC", "VRE", "BID", "HDB", "VIB",
+    "TPB", "SHB", "SSB", "PNJ", "PLX", "POW", "GVR", "BCM", "VJC", "BVH",
+    "DGC", "PVS", "PVD", "BSR", "GMD", "HAH", "VSC", "VCI", "HCM", "VND",
+    "MBS", "HSG", "NKG", "KDH", "NLG", "IDC", "KBC", "DGW", "FRT", "REE",
+    "LPB", "SAB", "PDR", "DIG", "DXG", "PVT", "DPM", "DCM"
 ]
 
 def fetch_all():
