@@ -1,0 +1,12 @@
+{
+  "name": "stock-system",
+  "version": "1.0.0",
+  "description": "VN Stock Lab - Quantitative Terminal & Portfolio Optimizer",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix frontend start",
+    "install:all": "npm --prefix frontend install"
+  }
+}
