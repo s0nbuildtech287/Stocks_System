@@ -96,7 +96,7 @@ export default function IntroHeroView({ onEnterTerminal }: IntroHeroViewProps) {
       <div className="absolute inset-0 bg-gradient-to-b from-[#0B0E11]/70 via-transparent to-[#0B0E11] pointer-events-none z-10" />
 
       {/* 2. TOP NAVBAR */}
-      <header className="relative z-20 flex items-center justify-between px-6 lg:px-12 py-5 border-b border-[#2B313A]/50 backdrop-blur-md bg-[#0B0E11]/40">
+      <header className="sticky top-0 z-30 flex items-center justify-between px-6 lg:px-12 py-4 border-b border-[#2B313A]/60 backdrop-blur-md bg-[#0B0E11]/80">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-yellow-500/20 border border-[#F0B90B]/60 bg-[#181A20] flex items-center justify-center p-0.5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -132,7 +132,7 @@ export default function IntroHeroView({ onEnterTerminal }: IntroHeroViewProps) {
       </header>
 
       {/* 3. HERO CONTENT */}
-      <main className="relative z-20 max-w-6xl mx-auto px-6 lg:px-12 pt-12 pb-20 flex flex-col items-center text-center">
+      <main className="relative z-20 max-w-6xl mx-auto px-6 lg:px-12 pt-10 pb-52 flex flex-col items-center text-center">
         {/* Glow pill badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#181A20]/80 border border-[#F0B90B]/40 text-[#F0B90B] text-xs font-semibold shadow-lg shadow-yellow-500/10 mb-6 backdrop-blur-md">
           <Sparkles className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: "6s" }} />
@@ -165,13 +165,18 @@ export default function IntroHeroView({ onEnterTerminal }: IntroHeroViewProps) {
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </button>
 
-          <a
-            href="#features"
-            className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#181A20]/80 border border-[#2B313A] text-[#EAECEF] font-semibold text-sm hover:border-[#F0B90B]/50 hover:bg-[#1E2329] transition-all flex items-center justify-center gap-2"
+          <button
+            onClick={() => {
+              const el = document.getElementById("features");
+              if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            }}
+            className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#181A20]/80 border border-[#2B313A] text-[#EAECEF] font-semibold text-sm hover:border-[#F0B90B]/50 hover:bg-[#1E2329] transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <span>Xem Các Tính Năng</span>
             <ChevronDown className="w-4 h-4 text-[#848E9C]" />
-          </a>
+          </button>
         </div>
 
         {/* 4. LIVE TICKER TICKER RIBBON */}
@@ -214,9 +219,9 @@ export default function IntroHeroView({ onEnterTerminal }: IntroHeroViewProps) {
           </div>
         </div>
 
-        {/* 5. FOUR FEATURE CARDS */}
-        <div id="features" className="w-full max-w-5xl text-left">
-          <div className="text-center mb-8">
+        {/* 5. FOUR FEATURE CARDS & INTEGRATED CTA BUTTON */}
+        <div id="features" className="w-full max-w-5xl text-left pt-12 pb-10 scroll-mt-20 flex flex-col items-center">
+          <div className="text-center mb-8 w-full">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
               Bộ Công Cụ Định Lượng Toàn Diện
             </h2>
@@ -225,7 +230,7 @@ export default function IntroHeroView({ onEnterTerminal }: IntroHeroViewProps) {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
             {features.map((feat, idx) => {
               const Icon = feat.icon;
               return (
@@ -251,32 +256,16 @@ export default function IntroHeroView({ onEnterTerminal }: IntroHeroViewProps) {
               );
             })}
           </div>
-        </div>
 
-        {/* 6. BOTTOM CTA & TECH STACK BADGES */}
-        <div className="mt-16 pt-8 border-t border-[#2B313A]/40 w-full max-w-4xl flex flex-col items-center gap-4">
-          <button
-            onClick={onEnterTerminal}
-            className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#F0B90B] to-[#FCD535] text-[#1E2329] font-black text-sm hover:shadow-xl hover:shadow-yellow-500/40 transition-all active:scale-95 cursor-pointer flex items-center gap-2"
-          >
-            <span>BẮT ĐẦU TRẢI NGHIỆM TERMINAL</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-
-          <div className="flex flex-wrap items-center justify-center gap-3 text-[11px] text-[#848E9C] mt-2">
-            <span>Powered by:</span>
-            <span className="px-2 py-0.5 rounded bg-[#181A20] border border-[#2B313A] text-[#EAECEF]">
-              Three.js 3D WebGL
-            </span>
-            <span className="px-2 py-0.5 rounded bg-[#181A20] border border-[#2B313A] text-[#EAECEF]">
-              Next.js 14
-            </span>
-            <span className="px-2 py-0.5 rounded bg-[#181A20] border border-[#2B313A] text-[#EAECEF]">
-              vnstock 4.0.5
-            </span>
-            <span className="px-2 py-0.5 rounded bg-[#181A20] border border-[#2B313A] text-[#EAECEF]">
-              Markowitz Portfolio Optimizer
-            </span>
+          {/* Prominent CTA button directly below the 4 feature cards */}
+          <div className="mt-10 flex justify-center w-full">
+            <button
+              onClick={onEnterTerminal}
+              className="px-10 py-4 rounded-xl bg-gradient-to-r from-[#F0B90B] to-[#FCD535] text-[#1E2329] font-black text-sm hover:shadow-2xl hover:shadow-yellow-500/50 hover:scale-105 transition-all duration-200 active:scale-95 cursor-pointer flex items-center gap-2 group"
+            >
+              <span>BẮT ĐẦU TRẢI NGHIỆM TERMINAL</span>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </button>
           </div>
         </div>
       </main>
