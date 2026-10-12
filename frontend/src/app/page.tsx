@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import {
+  BookOpen,
   Activity,
   BarChart3,
   Briefcase,
@@ -34,12 +35,13 @@ import StockInsightView from "@/components/insight/StockInsightView";
 import PeerComparisonView from "@/components/peers/PeerComparisonView";
 import PortfolioOptimizerView from "@/components/portfolio/PortfolioOptimizerView";
 import IntroHeroView from "@/components/intro/IntroHeroView";
+import AcademyView from "@/components/academy/AcademyView";
 import { VIETNAM_STOCKS } from "@/lib/stockData";
 
 export default function HomePage() {
   const [showIntro, setShowIntro] = useState(true);
   const [activeTab, setActiveTab] = useState<
-    "overview" | "insight" | "peers" | "screener" | "optimizer" | "papertrading" | "backtest" | "valuation"
+    "overview" | "insight" | "peers" | "screener" | "optimizer" | "papertrading" | "backtest" | "valuation" | "academy"
   >("overview");
   const [selectedTicker, setSelectedTicker] = useState<string | undefined>(undefined);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -58,6 +60,7 @@ export default function HomePage() {
     { id: "papertrading", label: "Paper Trade", badge: "T+2", icon: Briefcase, desc: "Nhật ký & giao dịch mô phỏng" },
     { id: "backtest", label: "Backtest", badge: "Engine", icon: LineChart, desc: "Kiểm thử chiến lược đa yếu tố" },
     { id: "valuation", label: "Valuation", badge: "Model", icon: BarChart3, desc: "Mô hình định giá CAPM, DDM" },
+    { id: "academy", label: "Academy", badge: "F0 to Pro", icon: BookOpen, desc: "Cẩm nang toàn thư từ A-Z cho người mới" },
   ];
 
   // If user is viewing Intro Landing Page
@@ -297,6 +300,7 @@ export default function HomePage() {
           {activeTab === "papertrading" && <PaperTradingView />}
           {activeTab === "backtest" && <BacktestView />}
           {activeTab === "valuation" && <ValuationView selectedTicker={selectedTicker} />}
+          {activeTab === "academy" && <AcademyView />}
         </main>
 
         {/* Bottom Disclaimer Footer */}
