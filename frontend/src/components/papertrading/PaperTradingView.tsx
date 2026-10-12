@@ -17,6 +17,8 @@ import {
   Zap,
 } from "lucide-react";
 import { VIETNAM_STOCKS } from "@/lib/stockData";
+import { useAuth } from "@/context/AuthContext";
+import { LogIn } from "lucide-react";
 
 interface Position {
   ticker: string;
@@ -41,6 +43,7 @@ interface TradeOrder {
 const INITIAL_CASH = 100_000_000; // 100M VND
 
 export default function PaperTradingView() {
+  const { currentUser, isGuest, openLoginModal, getUserData, saveUserData } = useAuth();
   // Live quotes state
   const [liveQuotes, setLiveQuotes] = useState<Record<string, any>>({});
   const [isLiveLoading, setIsLiveLoading] = useState(false);
@@ -61,31 +64,40 @@ export default function PaperTradingView() {
   // Load from localStorage on mount
   useEffect(() => {
     try {
-      const savedCash = localStorage.getItem("ss_paper_cash_v2");
-      const savedPositions = localStorage.getItem("ss_paper_positions_v2");
-      const savedOrders = localStorage.getItem("ss_paper_orders_v2");
-
-      if (savedCash !== null) setCash(Number(savedCash));
-      else setCash(INITIAL_CASH);
-
-      if (savedPositions !== null) setPositions(JSON.parse(savedPositions));
-      else setPositions([]);
-
-      if (savedOrders !== null) setOrders(JSON.parse(savedOrders));
-      else setOrders([]);
+      if (currentUser) {
+        const uCash = getUserData("paper_cash", INITIAL_CASH);
+        const uPos = getUserData("paper_positions", []);
+        const uOrders = getUserData("paper_orders", []);
+        setCash(uCash);
+        setPositions(uPos);
+        setOrders(uOrders);
+      } else {
+        const savedCash = localStorage.getItem("ss_paper_cash_guest");
+        const savedPositions = localStorage.getItem("ss_paper_positions_guest");
+        const savedOrders = localStorage.getItem("ss_paper_orders_guest");
+        setCash(savedCash !== null ? Number(savedCash) : INITIAL_CASH);
+        setPositions(savedPositions !== null ? JSON.parse(savedPositions) : []);
+        setOrders(savedOrders !== null ? JSON.parse(savedOrders) : []);
+      }
     } catch (e) {
       console.error("Error loading paper trading data:", e);
     }
     setIsInitialized(true);
-  }, []);
+  }, [currentUser]);
 
   // Save to localStorage on state change
   useEffect(() => {
     if (!isInitialized) return;
     try {
-      localStorage.setItem("ss_paper_cash_v2", cash.toString());
-      localStorage.setItem("ss_paper_positions_v2", JSON.stringify(positions));
-      localStorage.setItem("ss_paper_orders_v2", JSON.stringify(orders));
+      if (currentUser) {
+        saveUserData("paper_cash", cash);
+        saveUserData("paper_positions", positions);
+        saveUserData("paper_orders", orders);
+      } else {
+        localStorage.setItem("ss_paper_cash_guest", cash.toString());
+        localStorage.setItem("ss_paper_positions_guest", JSON.stringify(positions));
+        localStorage.setItem("ss_paper_orders_guest", JSON.stringify(orders));
+      }
     } catch (e) {
       console.error("Error saving paper trading data:", e);
     }

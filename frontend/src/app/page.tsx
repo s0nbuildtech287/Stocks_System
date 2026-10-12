@@ -36,9 +36,13 @@ import PeerComparisonView from "@/components/peers/PeerComparisonView";
 import PortfolioOptimizerView from "@/components/portfolio/PortfolioOptimizerView";
 import IntroHeroView from "@/components/intro/IntroHeroView";
 import AcademyView from "@/components/academy/AcademyView";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
+import LoginModal from "@/components/auth/LoginModal";
+import { User as UserIcon, LogOut } from "lucide-react";
 import { VIETNAM_STOCKS } from "@/lib/stockData";
 
-export default function HomePage() {
+function TerminalApp() {
+  const { currentUser, isGuest, openLoginModal, logout } = useAuth();
   const [showIntro, setShowIntro] = useState(true);
   const [activeTab, setActiveTab] = useState<
     "overview" | "insight" | "peers" | "screener" | "optimizer" | "papertrading" | "backtest" | "valuation" | "academy"
@@ -271,6 +275,32 @@ export default function HomePage() {
             <div className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-[#F0B90B]/15 text-[#F0B90B] border border-[#F0B90B]/30">
               EOD Point-in-time
             </div>
+
+            {/* User Auth Profile / Login Button */}
+            {isGuest ? (
+              <button
+                onClick={() => openLoginModal("Đăng nhập để lưu danh mục, danh sách yêu thích và nhật ký khớp lệnh của bạn!")}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#F0B90B] to-[#FCD535] hover:opacity-90 text-[#1E2329] font-black text-xs transition-all cursor-pointer shadow-sm"
+              >
+                <UserIcon className="w-3.5 h-3.5" />
+                <span>Đăng Nhập</span>
+              </button>
+            ) : (
+              <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-[#181A20] border border-[#2B313A]">
+                <div className={`w-6 h-6 rounded-full ${currentUser?.avatarBg || "bg-amber-500"} text-white font-black text-[10px] flex items-center justify-center`}>
+                  {currentUser?.name ? currentUser.name.slice(0, 2).toUpperCase() : "US"}
+                </div>
+                <span className="text-xs font-bold text-white max-w-[120px] truncate">{currentUser?.name}</span>
+                <span className="text-[9px] px-1.5 py-0.2 rounded bg-[#F0B90B]/20 text-[#F0B90B] font-extrabold">{currentUser?.role}</span>
+                <button
+                  onClick={logout}
+                  className="text-[#848E9C] hover:text-[#F6465D] transition-colors p-1"
+                  title="Đăng xuất"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
           </div>
         </header>
 
@@ -315,5 +345,15 @@ export default function HomePage() {
         </footer>
       </div>
     </div>
+  );
+}
+
+
+export default function HomePage() {
+  return (
+    <AuthProvider>
+      <TerminalApp />
+      <LoginModal />
+    </AuthProvider>
   );
 }
