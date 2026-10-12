@@ -46,23 +46,19 @@ def compute_peer_comparison(tickers):
             "rsi14": 52.0,
         })
 
-        # Try fetching real quote if available
+        # Fast live quote from Yahoo Finance or fallback to base
         live_price = base.get("price", 25000)
         live_change_pct = base.get("changePct", 0)
         try:
-            from vnstock import Quote
-            q = Quote(symbol=sym, source='VCI')
-            df = q.history(start=(datetime.now()).strftime('%Y-%m-%d'), end=(datetime.now()).strftime('%Y-%m-%d'), interval='1D')
-            if df is not None and not df.empty:
-                last_row = df.iloc[-1]
-                close_p = float(last_row.get('close', 0))
-                open_p = float(last_row.get('open', close_p))
-                if close_p > 0:
-                    if close_p < 1000:
-                        close_p *= 1000
-                        open_p *= 1000
-                    live_price = int(close_p)
-                    live_change_pct = round(((close_p - open_p) / (open_p or 1)) * 100, 2)
+            import yfinance as yf
+            df_yf = yf.download(f"{sym}.VN", period="5d", progress=False)
+            if df_yf is not None and not df_yf.empty:
+                s_c = df_yf["Close"].dropna()
+                if len(s_c) >= 1:
+                    c_val = float(s_c.iloc[-1])
+                    p_val = float(s_c.iloc[-2]) if len(s_c) > 1 else c_val
+                    live_price = int(c_val)
+                    live_change_pct = round(((c_val - p_val) / (p_val or 1)) * 100, 2)
         except Exception:
             pass
 
