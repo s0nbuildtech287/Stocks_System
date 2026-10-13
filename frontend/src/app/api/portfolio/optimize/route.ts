@@ -168,6 +168,7 @@ export async function POST(request: NextRequest) {
       rf,
       assets: assetMeta,
       correlationMatrix: corrMatrix,
+      frontierPoints,
       efficientFrontier: frontierPoints,
       portfolios: {
         maxSharpe: {

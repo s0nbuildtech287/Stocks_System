@@ -428,7 +428,7 @@ export default function PortfolioOptimizerView() {
 
             {/* Stacked Progress Bar */}
             <div className="w-full h-3 rounded-full bg-[#0B0E11] overflow-hidden flex border border-[#2B313A]">
-              {currentPortfolio?.weights.map((w, idx) => (
+              {(currentPortfolio?.weights || []).map((w, idx) => (
                 <div
                   key={w.ticker}
                   style={{
@@ -443,7 +443,7 @@ export default function PortfolioOptimizerView() {
 
             {/* Weight Cards Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono-num text-xs">
-              {currentPortfolio?.weights.map((w, idx) => {
+              {(currentPortfolio?.weights || []).map((w, idx) => {
                 const color = ALLOCATION_COLORS[idx % ALLOCATION_COLORS.length];
                 const asset = data.assets.find((a) => a.ticker === w.ticker);
 
@@ -514,7 +514,7 @@ export default function PortfolioOptimizerView() {
               ))}
 
               {/* Monte Carlo Simulated Dots */}
-              {data.frontierPoints.map((pt, idx) => (
+              {((data?.frontierPoints || (data as any)?.efficientFrontier || [])).map((pt: any, idx: number) => (
                 <circle
                   key={idx}
                   cx={getSvgX(pt.volatility)}
@@ -606,7 +606,7 @@ export default function PortfolioOptimizerView() {
           </div>
 
           <div className="space-y-3">
-            {data.stressTests.map((st) => (
+            {(data?.stressTests || []).map((st) => (
               <div
                 key={st.id}
                 className="p-4 rounded-xl bg-[#181A20] border border-[#2B313A] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"

@@ -314,7 +314,7 @@ export default function PeerComparisonView() {
         {/* Selected Ticker Chips */}
         <div className="flex items-center gap-2 flex-wrap pt-1">
           <span className="text-xs text-[#848E9C]">Mã đang so sánh:</span>
-          {peers.map((p, idx) => (
+          {(peers || []).map((p, idx) => (
             <div
               key={p.ticker}
               style={{ borderColor: PEER_COLORS[idx % PEER_COLORS.length] }}

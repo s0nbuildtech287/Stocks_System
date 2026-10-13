@@ -591,7 +591,7 @@ export default function StockInsightView({ initialTicker = "FPT", onNavigateToTa
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#2B313A] font-mono-num">
-                    {data.quarterlyFinancials.map((q) => (
+                    {(data?.quarterlyFinancials || []).map((q) => (
                       <tr key={q.quarter} className="hover:bg-[#181A20] transition-colors">
                         <td className="p-3.5 font-bold text-white">{q.quarter}</td>
                         <td className="p-3.5 text-right font-bold text-white">{q.revenue.toLocaleString("vi-VN")} Tỷ</td>
@@ -611,18 +611,18 @@ export default function StockInsightView({ initialTicker = "FPT", onNavigateToTa
             <div className="glass-panel p-6 rounded-2xl border border-[#2B313A] bg-[#12161C] shadow-xl space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <Newspaper className="w-5 h-5 text-[#F0B90B]" /> Tin Tức &amp; Thời Sự Doanh Nghiệp ({data.newsFeed.length} tin)
+                  <Newspaper className="w-5 h-5 text-[#F0B90B]" /> Tin Tức &amp; Thời Sự Doanh Nghiệp ({data?.newsFeed?.length || 0} tin)
                 </h3>
                 <span className="text-xs text-[#848E9C]">Cập nhật thời gian thực từ báo chí tài chính</span>
               </div>
 
-              {data.newsFeed.length === 0 ? (
+              {(!data?.newsFeed || data.newsFeed.length === 0) ? (
                 <div className="py-10 text-center text-[#848E9C] text-xs">
                   Không tìm thấy tin tức mới nào cho mã {data.ticker}.
                 </div>
               ) : (
                 <div className="divide-y divide-[#2B313A] space-y-1">
-                  {data.newsFeed.map((news) => (
+                  {(data?.newsFeed || []).map((news) => (
                     <a
                       key={news.id}
                       href={news.url}
@@ -670,7 +670,7 @@ export default function StockInsightView({ initialTicker = "FPT", onNavigateToTa
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#2B313A]">
-                    {data.corporateEvents.map((ev) => (
+                    {(data?.corporateEvents || []).map((ev) => (
                       <tr key={ev.id} className="hover:bg-[#181A20] transition-colors">
                         <td className="p-3.5 font-bold font-mono-num text-white">{ev.date}</td>
                         <td className="p-3.5 font-bold text-[#F0B90B]">{ev.type}</td>
@@ -696,7 +696,7 @@ export default function StockInsightView({ initialTicker = "FPT", onNavigateToTa
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {data.shareholders.map((sh) => (
+                {(data?.shareholders || []).map((sh) => (
                   <div key={sh.name} className="p-4 rounded-xl glass-card border border-[#2B313A] bg-[#181A20] space-y-2">
                     <span className="text-xs text-[#848E9C] font-semibold">{sh.name}</span>
                     <div className="text-2xl font-black font-mono-num text-white">{sh.percentage}%</div>

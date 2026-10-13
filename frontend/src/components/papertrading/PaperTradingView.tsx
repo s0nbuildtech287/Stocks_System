@@ -378,7 +378,7 @@ export default function PaperTradingView() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60 font-mono-num font-medium">
-                    {positions.map((pos) => {
+                    {(Array.isArray(positions) ? positions : []).map((pos) => {
                       const livePrice = getStockPrice(pos.ticker);
                       const marketVal = pos.shares * livePrice;
                       const costVal = pos.shares * pos.avgCost;
@@ -452,7 +452,7 @@ export default function PaperTradingView() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60 font-medium text-slate-300">
-                    {orders.map((ord) => (
+                    {(Array.isArray(orders) ? orders : []).map((ord) => (
                       <tr key={ord.id} className="hover:bg-slate-800/30 transition-colors">
                         <td className="p-3 text-slate-400 text-[11px]">{ord.timestamp}</td>
                         <td className="p-3 font-bold text-white">{ord.ticker}</td>
