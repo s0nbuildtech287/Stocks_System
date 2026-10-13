@@ -26,9 +26,10 @@ export async function GET(
   const rootDir = path.resolve(process.cwd(), "..");
 
   try {
-    const scriptPath = path.resolve(rootDir, "fetch_stock_deep_dive.py");
+    const scriptsDir = path.resolve(rootDir, "scripts");
+    const scriptPath = path.resolve(scriptsDir, "fetch_stock_deep_dive.py");
     const { stdout } = await execPromise(`python "${scriptPath}" --ticker ${ticker}`, {
-      cwd: rootDir,
+      cwd: scriptsDir,
       timeout: 15000,
       encoding: "utf8",
     });

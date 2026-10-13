@@ -15,12 +15,13 @@ export async function POST(request: NextRequest) {
     const rf = Number(body.rf) || 2.85;
 
     const rootDir = path.resolve(process.cwd(), "..");
-    const scriptPath = path.resolve(rootDir, "calc_portfolio_optimizer.py");
+    const scriptsDir = path.resolve(rootDir, "scripts");
+    const scriptPath = path.resolve(scriptsDir, "calc_portfolio_optimizer.py");
 
     const { stdout } = await execPromise(
       `python "${scriptPath}" --tickers "${tickers}" --capital ${capital} --rf ${rf}`,
       {
-        cwd: rootDir,
+        cwd: scriptsDir,
         timeout: 15000,
         encoding: "utf8",
       }

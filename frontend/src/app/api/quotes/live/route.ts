@@ -19,7 +19,9 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const scriptPath = path.resolve(process.cwd(), "..", "fetch_live_quotes.py");
+    const rootDir = path.resolve(process.cwd(), "..");
+    const scriptsDir = path.resolve(rootDir, "scripts");
+    const scriptPath = path.resolve(scriptsDir, "fetch_live_quotes.py");
     const { stdout } = await execPromise(`python "${scriptPath}"`, {
       timeout: 15000,
     });

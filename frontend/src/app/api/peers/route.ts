@@ -24,9 +24,10 @@ export async function GET(request: NextRequest) {
   const rootDir = path.resolve(process.cwd(), "..");
 
   try {
-    const scriptPath = path.resolve(rootDir, "calc_peer_comparison.py");
+    const scriptsDir = path.resolve(rootDir, "scripts");
+    const scriptPath = path.resolve(scriptsDir, "calc_peer_comparison.py");
     const { stdout } = await execPromise(`python "${scriptPath}" --tickers "${tickers}"`, {
-      cwd: rootDir,
+      cwd: scriptsDir,
       timeout: 15000,
       encoding: "utf8",
     });

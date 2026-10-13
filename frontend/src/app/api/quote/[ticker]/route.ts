@@ -14,7 +14,9 @@ export async function GET(
   const ticker = (params.ticker || "FPT").toUpperCase();
 
   try {
-    const scriptPath = path.resolve(process.cwd(), "..", "fetch_live_stock.py");
+    const rootDir = path.resolve(process.cwd(), "..");
+    const scriptsDir = path.resolve(rootDir, "scripts");
+    const scriptPath = path.resolve(scriptsDir, "fetch_live_stock.py");
     const { stdout } = await execPromise(`python "${scriptPath}" ${ticker}`, {
       timeout: 12000,
     });
