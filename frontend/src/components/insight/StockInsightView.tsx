@@ -259,12 +259,13 @@ export default function StockInsightView({ initialTicker = "FPT", onNavigateToTa
 
   const quickTickers = ["FPT", "HPG", "VIC", "VNM", "TCB", "MBB", "MWG", "SSI", "GAS", "VHM", "DGC", "VTP", "REE"];
 
-  const fetchInsightData = async (symbol: string) => {
+    const fetchInsightData = async (symbol: string, isSilent = false) => {
     const sym = symbol.toUpperCase().trim();
     if (!sym) return;
     setTicker(sym);
-    setData(buildFallbackInsightData(sym));
-    setIsLoading(true);
+    if (!isSilent) {
+      setIsLoading(true);
+    }
 
     try {
       const res = await fetch(`/api/stock/insight/${sym}`);
@@ -277,13 +278,19 @@ export default function StockInsightView({ initialTicker = "FPT", onNavigateToTa
     } catch (err) {
       console.error("Failed to fetch live stock insight:", err);
     } finally {
-      setIsLoading(false);
+      if (!isSilent) {
+        setIsLoading(false);
+      }
     }
   };
 
   useEffect(() => {
     fetchInsightData(initialTicker);
-  }, [initialTicker]);
+    const interval = setInterval(() => {
+      fetchInsightData(ticker, true);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [initialTicker, ticker]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -315,7 +322,7 @@ export default function StockInsightView({ initialTicker = "FPT", onNavigateToTa
               </div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-[#181A20] text-[#0ECB81] border border-[#0ECB81]/30">
                 <span className="w-2 h-2 rounded-full bg-[#0ECB81] animate-pulse" />
-                Live vnstock &amp; Web News
+                VPS Realtime ⚡ &amp; Google News
               </div>
             </div>
             <h2 className="text-2xl font-black text-white tracking-tight">
@@ -394,7 +401,7 @@ export default function StockInsightView({ initialTicker = "FPT", onNavigateToTa
               {/* Right: Live Price & Key Actions */}
               <div className="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end justify-between gap-4 shrink-0 bg-[#0B0E11] p-5 rounded-2xl border border-[#2B313A]">
                 <div className="space-y-0.5 text-left lg:text-right">
-                  <div className="text-[11px] text-[#848E9C] font-semibold">Giá thị trường Live (vnstock)</div>
+                  <div className="text-[11px] text-[#848E9C] font-semibold">Giá thị trường Live (VPS) ⚡</div>
                   <div className="text-3xl font-black font-mono-num text-white">
                     {data.quote.price.toLocaleString("vi-VN")} đ
                   </div>

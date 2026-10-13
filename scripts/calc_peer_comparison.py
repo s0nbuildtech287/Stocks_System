@@ -46,19 +46,22 @@ def compute_peer_comparison(tickers):
             "rsi14": 52.0,
         })
 
-        # Fast live quote from Yahoo Finance or fallback to base
+                # Fast live quote from VPS feed or fallback to base
         live_price = base.get("price", 25000)
         live_change_pct = base.get("changePct", 0)
         try:
-            import yfinance as yf
-            df_yf = yf.download(f"{sym}.VN", period="5d", progress=False)
-            if df_yf is not None and not df_yf.empty:
-                s_c = df_yf["Close"].dropna()
-                if len(s_c) >= 1:
-                    c_val = float(s_c.iloc[-1])
-                    p_val = float(s_c.iloc[-2]) if len(s_c) > 1 else c_val
-                    live_price = int(c_val)
-                    live_change_pct = round(((c_val - p_val) / (p_val or 1)) * 100, 2)
+            import urllib.request
+            req = urllib.request.Request(f"https://bgapidatafeed.vps.com.vn/getliststockdata/{sym}", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=3) as resp:
+                arr = json.loads(resp.read().decode())
+                if arr and isinstance(arr, list):
+                    s_data = arr[0]
+                    raw_p = float(s_data.get("lastPrice") or s_data.get("r") or 0)
+                    if raw_p > 0:
+                        live_price = int(raw_p * 1000 if raw_p < 1000 else raw_p)
+                        ref_p = float(s_data.get("r") or raw_p)
+                        ref = ref_p * 1000 if ref_p < 1000 else ref_p
+                        live_change_pct = round(((live_price - ref) / (ref or 1)) * 100, 2)
         except Exception:
             pass
 

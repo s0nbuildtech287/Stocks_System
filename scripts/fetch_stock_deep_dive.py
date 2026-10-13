@@ -137,36 +137,21 @@ def get_stock_deep_dive(ticker):
     live_high52 = base_profile.get("high52w", live_price * 1.25)
     live_low52 = base_profile.get("low52w", live_price * 0.75)
 
-    try:
-        from vnstock import Quote
-        q = Quote(symbol=ticker, source='VCI')
-        end_d = datetime.now().strftime('%Y-%m-%d')
-        start_d = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
-        df = q.history(start=start_d, end=end_d, interval='1D')
-        if df is not None and not df.empty:
-            last_row = df.iloc[-1]
-            close_p = float(last_row.get('close', 0))
-            open_p = float(last_row.get('open', close_p))
-            if close_p > 0:
-                if close_p < 1000:
-                    close_p *= 1000
-                    open_p *= 1000
-                live_price = int(close_p)
-                live_change = int(close_p - open_p)
-                live_change_pct = round(((close_p - open_p) / (open_p or 1)) * 100, 2)
-                live_volume = int(last_row.get('volume', 1000000))
-                
-                # Real 52W High / Low from daily candles
-                highs = df['high'].dropna()
-                lows = df['low'].dropna()
-                if not highs.empty and not lows.empty:
-                    max_h = float(highs.max())
-                    min_l = float(lows.min())
-                    if max_h < 1000:
-                        max_h *= 1000
-                        min_l *= 1000
-                    live_high52 = int(max_h)
-                    live_low52 = int(min_l)
+        try:
+        import urllib.request
+        req = urllib.request.Request(f"https://bgapidatafeed.vps.com.vn/getliststockdata/{ticker}", headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=3) as resp:
+            arr = json.loads(resp.read().decode())
+            if arr and isinstance(arr, list):
+                s_data = arr[0]
+                raw_p = float(s_data.get("lastPrice") or s_data.get("r") or 0)
+                if raw_p > 0:
+                    live_price = int(raw_p * 1000 if raw_p < 1000 else raw_p)
+                    ref_p = float(s_data.get("r") or raw_p)
+                    ref = ref_p * 1000 if ref_p < 1000 else ref_p
+                    live_change = int(live_price - ref)
+                    live_change_pct = round(((live_price - ref) / (ref or 1)) * 100, 2)
+                    live_volume = int(s_data.get("lot") or 1000000)
     except Exception as e:
         pass
 

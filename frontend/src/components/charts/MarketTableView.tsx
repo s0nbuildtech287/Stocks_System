@@ -68,6 +68,10 @@ export default function MarketTableView({ initialExpandedTicker, onSelectTickerF
 
   React.useEffect(() => {
     fetchLiveQuotes();
+    const interval = setInterval(() => {
+      fetchLiveQuotes();
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   React.useEffect(() => {
@@ -331,10 +335,10 @@ export default function MarketTableView({ initialExpandedTicker, onSelectTickerF
             onClick={fetchLiveQuotes}
             disabled={isLiveSyncing}
             className="px-3 py-2 rounded-xl bg-[#181A20] hover:bg-[#2B313A] border border-[#2B313A] text-xs text-[#EAECEF] flex items-center gap-2 transition-all font-mono-num"
-            title="Đồng bộ dữ liệu thời gian thực từ vnstock"
+            title="Dữ liệu thời gian thực Real-time từ Bảng điện VPS HOSE/HNX"
           >
             <span className={`w-2 h-2 rounded-full ${isLiveSyncing ? "bg-[#F0B90B] animate-spin" : "bg-[#0ECB81] animate-pulse"}`} />
-            <span>{isLiveSyncing ? "Đang đồng bộ..." : lastSyncDate ? `EOD ${lastSyncDate}` : "vnstock Live"}</span>
+            <span>{isLiveSyncing ? "Đang đồng bộ..." : lastSyncDate ? `EOD ${lastSyncDate}` : "VPS Realtime ⚡"}</span>
           </button>
 
           <div className="px-4 py-2 rounded-xl bg-[#181A20] border border-[#2B313A] text-right">
