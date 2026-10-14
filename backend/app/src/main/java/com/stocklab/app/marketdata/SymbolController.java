@@ -1,5 +1,11 @@
 package com.stocklab.app.marketdata;
 
+import com.stocklab.app.common.dto.ApiResponse;
+import com.stocklab.app.marketdata.dto.DailyPriceResponse;
+import com.stocklab.app.marketdata.dto.SymbolResponse;
+import com.stocklab.app.marketdata.service.MarketDataService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,63 +16,48 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/symbols")
+@Tag(name = "Market Data - Symbols", description = "Endpoints tra cứu mã niêm yết, lịch sử giá và chỉ số tài chính")
 public class SymbolController {
 
-    private final SymbolRepository symbolRepository;
-    private final DailyPriceRepository dailyPriceRepository;
+    private final MarketDataService marketDataService;
 
-    public SymbolController(SymbolRepository symbolRepository, DailyPriceRepository dailyPriceRepository) {
-        this.symbolRepository = symbolRepository;
-        this.dailyPriceRepository = dailyPriceRepository;
+    public SymbolController(MarketDataService marketDataService) {
+        this.marketDataService = marketDataService;
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllSymbols(
+    @Operation(summary = "Lấy danh sách mã chứng khoán theo sàn hoặc từ khóa tìm kiếm")
+    public ResponseEntity<ApiResponse<List<SymbolResponse>>> getAllSymbols(
             @RequestParam(required = false) String exchange,
             @RequestParam(required = false) String query
     ) {
-        List<SymbolEntity> list = symbolRepository.findAll();
-        return ResponseEntity.ok(list);
+        List<SymbolResponse> list = marketDataService.getAllSymbols(exchange, query);
+        return ResponseEntity.ok(ApiResponse.ok(list));
     }
 
     @GetMapping("/{ticker}")
-    public ResponseEntity<?> getSymbolDetail(@PathVariable String ticker) {
-        return symbolRepository.findByTicker(ticker.toUpperCase())
-                .<ResponseEntity<?>>map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(404).body(Map.of("code", "NOT_FOUND", "message", "Symbol not found: " + ticker)));
+    @Operation(summary = "Lấy thông tin chi tiết của một mã chứng khoán")
+    public ResponseEntity<ApiResponse<SymbolResponse>> getSymbolDetail(@PathVariable String ticker) {
+        SymbolResponse detail = marketDataService.getSymbolDetail(ticker);
+        return ResponseEntity.ok(ApiResponse.ok(detail));
     }
 
     @GetMapping("/{ticker}/prices")
-    public ResponseEntity<?> getSymbolPrices(
+    @Operation(summary = "Lấy chuỗi dữ liệu giá lịch sử OHLCV theo khoảng thời gian")
+    public ResponseEntity<ApiResponse<List<DailyPriceResponse>>> getSymbolPrices(
             @PathVariable String ticker,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
             @RequestParam(defaultValue = "true") boolean adjusted
     ) {
-        var opt = symbolRepository.findByTicker(ticker.toUpperCase());
-        if (opt.isEmpty()) {
-            return ResponseEntity.status(404).body(Map.of("code", "NOT_FOUND", "message", "Ticker not found"));
-        }
-
-        LocalDate startDate = from != null ? from : LocalDate.now().minusYears(1);
-        LocalDate endDate = to != null ? to : LocalDate.now();
-
-        List<DailyPriceEntity> prices = dailyPriceRepository.findBySymbolIdAndDateRange(opt.get().getId(), startDate, endDate);
-        return ResponseEntity.ok(prices);
+        List<DailyPriceResponse> prices = marketDataService.getHistoricalPrices(ticker, from, to, adjusted);
+        return ResponseEntity.ok(ApiResponse.ok(prices));
     }
 
     @GetMapping("/{ticker}/metrics")
-    public ResponseEntity<?> getSymbolMetrics(@PathVariable String ticker) {
-        // Return latest metrics summary
-        return ResponseEntity.ok(Map.of(
-                "ticker", ticker.toUpperCase(),
-                "peTtm", 15.4,
-                "pb", 2.1,
-                "roeTtm", 0.224,
-                "epsTtm", 8200,
-                "beta1y", 1.15,
-                "volatility60d", 0.245,
-                "disclaimer", "Dữ liệu tính toán Point-in-time cuối ngày."
-        ));
+    @Operation(summary = "Lấy các chỉ số tài chính định lượng Point-in-time của mã")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getSymbolMetrics(@PathVariable String ticker) {
+        Map<String, Object> metrics = marketDataService.getSymbolMetrics(ticker);
+        return ResponseEntity.ok(ApiResponse.ok(metrics));
     }
 }

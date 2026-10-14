@@ -1,41 +1,42 @@
 package com.stocklab.app.valuation;
 
-import com.stocklab.core.valuation.CapmCalculator;
-import com.stocklab.core.valuation.DdmCalculator;
+import com.stocklab.app.common.dto.ApiResponse;
+import com.stocklab.app.valuation.dto.CapmRequest;
+import com.stocklab.app.valuation.dto.DdmRequest;
+import com.stocklab.app.valuation.service.ValuationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/valuation")
+@Tag(name = "Valuation Models", description = "Các mô hình định giá tài chính: CAPM, Gordon DDM")
 public class ValuationController {
 
-    public record CapmRequest(BigDecimal riskFreeRate, BigDecimal beta, BigDecimal equityRiskPremium) {}
-    public record DdmRequest(BigDecimal dividendD0, BigDecimal costOfEquity, BigDecimal growthRate) {}
+    private final ValuationService valuationService;
+
+    public ValuationController(ValuationService valuationService) {
+        this.valuationService = valuationService;
+    }
 
     @PostMapping("/capm")
-    public ResponseEntity<?> calculateCapm(@RequestBody CapmRequest req) {
-        var result = CapmCalculator.calculate(req.riskFreeRate(), req.beta(), req.equityRiskPremium());
-        return ResponseEntity.ok(result);
+    @Operation(summary = "Tính toán chi phí vốn chủ sở hữu theo mô hình CAPM")
+    public ResponseEntity<ApiResponse<Object>> calculateCapm(@RequestBody CapmRequest req) {
+        return ResponseEntity.ok(ApiResponse.ok(valuationService.calculateCapm(req)));
     }
 
     @PostMapping("/ddm")
-    public ResponseEntity<?> calculateDdm(@RequestBody DdmRequest req) {
-        var result = DdmCalculator.calculateGordon(req.dividendD0(), req.costOfEquity(), req.growthRate());
-        return ResponseEntity.ok(result);
+    @Operation(summary = "Định giá giá trị hợp lý cổ phiếu theo mô hình Chiết khấu Cổ tức Gordon (DDM)")
+    public ResponseEntity<ApiResponse<Object>> calculateDdm(@RequestBody DdmRequest req) {
+        return ResponseEntity.ok(ApiResponse.ok(valuationService.calculateDdm(req)));
     }
 
     @GetMapping("/{ticker}/defaults")
-    public ResponseEntity<?> getValuationDefaults(@PathVariable String ticker) {
-        return ResponseEntity.ok(Map.of(
-                "ticker", ticker.toUpperCase(),
-                "defaultRiskFreeRate", 0.0285, // 2.85% TPCP 10Y
-                "defaultBeta", 1.15,
-                "defaultErp", 0.08,           // 8% Vietnam Equity Risk Premium assumption
-                "latestDividendD0", 2500,     // 2,500 VND cash dividend
-                "defaultGrowthRate", 0.05     // 5% sustainable long term growth
-        ));
+    @Operation(summary = "Lấy các giả định định giá tham chiếu mặc định của mã")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getValuationDefaults(@PathVariable String ticker) {
+        return ResponseEntity.ok(ApiResponse.ok(valuationService.getValuationDefaults(ticker)));
     }
 }

@@ -1,72 +1,52 @@
 package com.stocklab.app.papertrading;
 
+import com.stocklab.app.common.dto.ApiResponse;
+import com.stocklab.app.papertrading.dto.CreatePortfolioRequest;
+import com.stocklab.app.papertrading.dto.PlaceOrderRequest;
+import com.stocklab.app.papertrading.service.PaperTradingService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/portfolios")
+@Tag(name = "Paper Trading", description = "Giao dịch mô phỏng chứng khoán Việt Nam chuẩn chu kỳ T+2.5")
 public class PortfolioController {
 
-    public record CreatePortfolioRequest(String name, BigDecimal initialCash) {}
+    private final PaperTradingService paperTradingService;
 
-    public record PlaceOrderRequest(
-            String ticker,
-            String side,          // BUY | SELL
-            String orderType,     // MARKET | LIMIT
-            int quantity,         // Must be multiple of 100
-            BigDecimal limitPrice,
-            String thesis         // REQUIRED: reason for buying/selling
-    ) {}
+    public PortfolioController(PaperTradingService paperTradingService) {
+        this.paperTradingService = paperTradingService;
+    }
 
     @GetMapping
-    public ResponseEntity<?> getUserPortfolios() {
-        return ResponseEntity.ok(List.of(
-                Map.of(
-                        "id", 1,
-                        "name", "Danh mục Tăng trưởng VN30",
-                        "cash", 75000000,
-                        "marketValue", 125000000,
-                        "nav", 200000000,
-                        "returnPct", 0.125
-                )
-        ));
+    @Operation(summary = "Lấy danh sách các danh mục đầu tư mô phỏng của người dùng")
+    public ResponseEntity<ApiResponse<List<Map<String, Object>>>> getUserPortfolios() {
+        return ResponseEntity.ok(ApiResponse.ok(paperTradingService.getUserPortfolios()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPortfolioDetail(@PathVariable Long id) {
-        return ResponseEntity.ok(Map.of(
-                "id", id,
-                "name", "Danh mục Tăng trưởng VN30",
-                "cash", 75000000,
-                "nav", 200000000,
-                "positions", List.of(
-                        Map.of("ticker", "FPT", "totalQuantity", 500, "availableQuantity", 500, "avgCost", 115000, "currentPrice", 135000, "unrealizedPnl", 10000000),
-                        Map.of("ticker", "MBB", "totalQuantity", 2000, "availableQuantity", 2000, "avgCost", 21000, "currentPrice", 24500, "unrealizedPnl", 7000000)
-                ),
-                "recentOrders", List.of(
-                        Map.of("id", 101, "ticker", "FPT", "side", "BUY", "quantity", 500, "status", "FILLED", "thesis", "Kỳ vọng tăng trưởng mảng AI & Cloud 30% YoY", "date", "2025-02-15")
-                )
-        ));
+    @Operation(summary = "Xem chi tiết danh mục, số dư tiền, vị thế nắm giữ và lịch sử lệnh")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getPortfolioDetail(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.ok(paperTradingService.getPortfolioDetail(id)));
+    }
+
+    @PostMapping
+    @Operation(summary = "Tạo danh mục đầu tư mô phỏng mới")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> createPortfolio(@RequestBody CreatePortfolioRequest req) {
+        return ResponseEntity.ok(ApiResponse.ok("Tạo danh mục thành công", paperTradingService.createPortfolio(req)));
     }
 
     @PostMapping("/{id}/orders")
-    public ResponseEntity<?> placeOrder(@PathVariable Long id, @RequestBody PlaceOrderRequest req) {
-        if (req.quantity() <= 0 || req.quantity() % 100 != 0) {
-            return ResponseEntity.badRequest().body(Map.of("code", "INVALID_LOT", "message", "Khối lượng phải là bội số của 100 cổ phiếu."));
-        }
-        if (req.thesis() == null || req.thesis().trim().isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of("code", "THESIS_REQUIRED", "message", "Bắt buộc nhập lý do (thesis) vào lệnh để học tập và rèn luyện kỷ luật."));
-        }
-
-        return ResponseEntity.ok(Map.of(
-                "orderId", System.currentTimeMillis(),
-                "status", "PENDING",
-                "message", "Lệnh đã được ghi nhận vào hàng đợi, sẽ được khớp theo giá mở cửa phiên giao dịch tiếp theo (T+1)."
-        ));
+    @Operation(summary = "Đặt lệnh MUA/BÁN cổ phiếu mô phỏng theo quy tắc khớp lệnh lô chẵn")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> placeOrder(
+            @PathVariable Long id,
+            @RequestBody PlaceOrderRequest req
+    ) {
+        return ResponseEntity.ok(ApiResponse.ok("Đặt lệnh thành công", paperTradingService.placeOrder(id, req)));
     }
 }

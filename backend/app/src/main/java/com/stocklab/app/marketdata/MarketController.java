@@ -1,40 +1,34 @@
 package com.stocklab.app.marketdata;
 
+import com.stocklab.app.common.dto.ApiResponse;
+import com.stocklab.app.marketdata.service.MarketDataService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/market")
+@Tag(name = "Market Overview", description = "Tổng quan chỉ số thị trường VN-Index, VN30 và Top biến động")
 public class MarketController {
 
+    private final MarketDataService marketDataService;
+
+    public MarketController(MarketDataService marketDataService) {
+        this.marketDataService = marketDataService;
+    }
+
     @GetMapping("/overview")
-    public ResponseEntity<?> getMarketOverview() {
-        return ResponseEntity.ok(Map.of(
-                "indices", List.of(
-                        Map.of("code", "VNINDEX", "close", 1280.50, "change", 12.30, "changePct", 0.97, "volume", 750000000, "value", 18500000000000L),
-                        Map.of("code", "VN30", "close", 1345.80, "change", 15.60, "changePct", 1.17, "volume", 280000000, "value", 9200000000000L),
-                        Map.of("code", "HNX", "close", 235.40, "change", 1.80, "changePct", 0.77, "volume", 65000000, "value", 1200000000000L)
-                ),
-                "riskFreeRate10Y", 2.85,
-                "marketSentiment", "Tích cực"
-        ));
+    @Operation(summary = "Tổng quan chỉ số VN-Index, VN30, HNX và Lãi suất TPCP 10Y")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getMarketOverview() {
+        return ResponseEntity.ok(ApiResponse.ok(marketDataService.getMarketOverview()));
     }
 
     @GetMapping("/top-movers")
-    public ResponseEntity<?> getTopMovers() {
-        return ResponseEntity.ok(Map.of(
-                "gainers", List.of(
-                        Map.of("ticker", "FPT", "price", 135000, "changePct", 6.8),
-                        Map.of("ticker", "MWG", "price", 68500, "changePct", 5.2),
-                        Map.of("ticker", "TCB", "price", 24800, "changePct", 4.3)
-                ),
-                "losers", List.of(
-                        Map.of("ticker", "VHM", "price", 41200, "changePct", -2.1),
-                        Map.of("ticker", "NVL", "price", 11200, "changePct", -1.8)
-                )
-        ));
+    @Operation(summary = "Danh sách top cổ phiếu tăng giá mạnh nhất và giảm giá mạnh nhất")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getTopMovers() {
+        return ResponseEntity.ok(ApiResponse.ok(marketDataService.getTopMovers()));
     }
 }
